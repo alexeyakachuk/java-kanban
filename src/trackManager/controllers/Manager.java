@@ -1,4 +1,9 @@
-import java.sql.Array;
+package trackManager.controllers;
+
+import trackManager.model.Epic;
+import trackManager.model.SubTask;
+import trackManager.model.Task;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,11 +11,11 @@ import java.util.Map;
 
 public class Manager {
 
-    Integer id = 0;
+    private Integer id = 0;
 
-    Map<Integer, Task> taskMap = new HashMap<>();
-    Map<Integer, Epic> epicMap = new HashMap<>();
-    Map<Integer, SubTask> subTaskMap = new HashMap<>();
+    private Map<Integer, Task> taskMap = new HashMap<>();
+    private Map<Integer, Epic> epicMap = new HashMap<>();
+    private Map<Integer, SubTask> subTaskMap = new HashMap<>();
 
 
     public Integer createNewId() {
@@ -20,16 +25,16 @@ public class Manager {
 
 // Получение списка всех задачь
 
-    public Map<Integer, Task> getAllTasks() {
-        return taskMap;
+    public List<Task> getAllTasks() {
+        return new ArrayList<>(taskMap.values());
     }
 
-    public Map<Integer, Epic> getAllEpics() {
-        return epicMap;
+    public List<Epic> getAllEpics() {
+        return new ArrayList<>(epicMap.values());
     }
 
-    public Map<Integer, SubTask> getAllSubtasks() {
-        return subTaskMap;
+    public List<SubTask> getAllSubtasks() {
+        return new ArrayList<>(subTaskMap.values());
     }
 
     //Удаление всех задачь
@@ -39,11 +44,15 @@ public class Manager {
     }
 
     public void deleteEpics() {
-        epicMap.clear();
+        for (Epic epic : new ArrayList<>(epicMap.values())) {
+            deleteByIdEpic(epic.id);
+        }
     }
 
     public void deleteSubTasks() {
-        subTaskMap.clear();
+        for (SubTask subTask : new ArrayList<>(subTaskMap.values())) {
+            deleteByIdSubTask(subTask.id);
+        }
     }
 
     //Получение по индефикатору
@@ -61,34 +70,28 @@ public class Manager {
 
     //Создание новой задачи
     public void createNewTask(Task task) {
-        // Task newTask = new Task(task.id, task.nameTask, task.descriptionTask, task.statusTask);
         taskMap.put(task.id, task);
     }
 
     public void createNewEpic(Epic epic) {
-        // Epic newEpic = new Epic(epic.id, epic.nameTask, epic.descriptionTask, epic.statusTask);
         epicMap.put(epic.id, epic);
     }
 
     public void createNewSubTask(SubTask subTask) {
-        // SubTask newSubTask = new SubTask(subTask.id, subTask.nameTask, subTask.descriptionTask, subTask.statusTask);
         subTaskMap.put(subTask.id, subTask);
     }
 
     //Обновление задачи
 
     public void updateTask(Task task) {
-//        Task updateTask = new Task(task.id, task.nameTask, task.descriptionTask, task.statusTask);
         taskMap.put(task.id, task);
     }
 
     public void updateEpic(Epic epic) {
-//        Epic updateEpic = new Epic(epic.id, epic.nameTask, epic.descriptionTask, epic.statusTask);
         epicMap.put(epic.id, epic);
     }
 
     public void updateSubTask(SubTask subTask) {
-//        SubTask updateSubTask = new SubTask(subTask.id, subTask.nameTask, subTask.descriptionTask, subTask.statusTask);
         subTaskMap.put(subTask.id, subTask);
     }
 
@@ -132,6 +135,10 @@ public class Manager {
 
 
     }
-
-
 }
+
+
+
+
+
+

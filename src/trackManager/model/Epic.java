@@ -1,3 +1,5 @@
+package trackManager.model;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -5,8 +7,8 @@ public class Epic extends Task {
 
     private final List<SubTask> subTasks = new ArrayList<>();
 
-    public Epic(Integer id, String nameTask, String descriptionTask, String statusTask) {
-        super(id, nameTask, descriptionTask, statusTask);
+    public Epic(Integer id, String nameTask, String descriptionTask) {
+        super(id, nameTask, descriptionTask);
     }
 
     public List<SubTask> getSubTasks() {
@@ -17,6 +19,7 @@ public class Epic extends Task {
 
     public void addSubTask(SubTask subTask) {
         subTasks.add(subTask);
+
     }
 
     public void deleteSubTask(SubTask subTask) {
@@ -52,5 +55,4 @@ public class Epic extends Task {
 
 
 }
-
 
