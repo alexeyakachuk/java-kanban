@@ -70,15 +70,23 @@ public class Manager {
 
     //Создание новой задачи
     public void createNewTask(Task task) {
-        taskMap.put(task.id, task);
+        final int id = createNewId();
+        task.setId(id);
+        taskMap.put(id,task);
     }
 
     public void createNewEpic(Epic epic) {
-        epicMap.put(epic.id, epic);
+        final int id = createNewId();
+        epic.setId(id);
+        epicMap.put(id,epic);
     }
 
-    public void createNewSubTask(SubTask subTask) {
-        subTaskMap.put(subTask.id, subTask);
+    public void createNewSubTask(SubTask subTask, Epic epic) {
+        final int id = createNewId();
+        subTask.setId(id);
+        epic.addSubTask(subTask);
+        subTask.setEpic(epic);
+        subTaskMap.put(id,subTask);
     }
 
     //Обновление задачи

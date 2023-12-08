@@ -7,15 +7,13 @@ public class Epic extends Task {
 
     private final List<SubTask> subTasks = new ArrayList<>();
 
-    public Epic(Integer id, String nameTask, String descriptionTask) {
-        super(id, nameTask, descriptionTask);
+    public Epic(String nameTask, String descriptionTask) {
+        super(nameTask, descriptionTask);
     }
 
     public List<SubTask> getSubTasks() {
         return subTasks;
     }
-
-
 
     public void addSubTask(SubTask subTask) {
         subTasks.add(subTask);
@@ -52,7 +50,5 @@ public class Epic extends Task {
             return "In progress";
         }
     }
-
-
 }
 

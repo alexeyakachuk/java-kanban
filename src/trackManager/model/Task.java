@@ -9,24 +9,19 @@ public class Task {
     public String descriptionTask;
     public String statusTask;
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Task task = (Task) o;
-//        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) && Objects.equals(descriptionTask, task.descriptionTask) && Objects.equals(statusTask, task.statusTask);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, nameTask, descriptionTask, statusTask);
-//    }
-
-    public Task(Integer id, String nameTask, String descriptionTask) {
-        this.id = id;
+    public Task(String nameTask, String descriptionTask) {
+        this.id = 0;
         this.nameTask = nameTask;
         this.descriptionTask = descriptionTask;
         this.statusTask = "New";
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNameTask() {
@@ -52,6 +47,21 @@ public class Task {
     public void setStatusTask(String statusTask) {
         this.statusTask = statusTask;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) && Objects.equals(descriptionTask, task.descriptionTask) && Objects.equals(statusTask, task.statusTask);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nameTask, descriptionTask, statusTask);
+    }
+
+
 
     @Override
     public String toString() {

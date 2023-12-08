@@ -9,10 +9,10 @@ public class SubTask extends Task {
 
 
 
-    private Epic epic;
+    private Epic epic = null;
 
-    public SubTask(Integer id, String nameTask, String descriptionTask) {
-        super(id, nameTask, descriptionTask);
+    public SubTask(String nameTask, String descriptionTask) {
+        super(nameTask, descriptionTask);
     }
 
     public Epic getEpic() {

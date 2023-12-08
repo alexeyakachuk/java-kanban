@@ -9,35 +9,27 @@ public class Main {
     public static void main(String[] args) {
         Manager manager = new Manager();
 
-        Task task = new Task(manager.createNewId(), "Сходить в магазин", "Купить продукты");
-        Task task1 = new Task(manager.createNewId(), "Прибратся", "Разложить вещи");
+        Task task = new Task("Сходить в магазин", "Купить продукты");
+        Task task1 = new Task("Прибратся", "Разложить вещи");
 
-        Epic epic = new Epic(manager.createNewId(), "Переез", "Подготовить вещи к переезду");
-        SubTask subTask = new SubTask(manager.createNewId(), "Собрать ниги",
+        Epic epic = new Epic("Переез", "Подготовить вещи к переезду");
+        SubTask subTask = new SubTask("Собрать ниги",
                 "Сложить книги в коробки");
-        SubTask subTask1 = new SubTask(manager.createNewId(), "Собрать одежду",
+        SubTask subTask1 = new SubTask("Собрать одежду",
                 "Сложить одежду в коробки");
 
-        Epic epic1 = new Epic(manager.createNewId(), "Ремонт", "Поклеить обои");
-        SubTask subTask2 = new SubTask(manager.createNewId(), "Купить обои", "Выбрать обои");
+        Epic epic1 = new Epic("Ремонт", "Поклеить обои");
+        SubTask subTask2 = new SubTask("Купить обои", "Выбрать обои");
 
         manager.createNewTask(task);
         manager.createNewTask(task1);
 
         manager.createNewEpic(epic);
-        manager.createNewSubTask(subTask);
-        manager.createNewSubTask(subTask1);
+        manager.createNewSubTask(subTask, epic);
+        manager.createNewSubTask(subTask1, epic);
 
         manager.createNewEpic(epic1);
-        manager.createNewSubTask(subTask2);
-
-        epic.addSubTask(subTask);
-        epic.addSubTask(subTask1);
-        subTask.setEpic(epic);
-        subTask1.setEpic(epic);
-
-        epic1.addSubTask(subTask2);
-        subTask2.setEpic(epic1);
+        manager.createNewSubTask(subTask2, epic1);
 
         System.out.println(manager.getAllTasks());
         System.out.println(manager.getAllEpics());
@@ -66,26 +58,6 @@ public class Main {
 
         System.out.println(manager.getTaskById(1));
         System.out.println(manager.getEpicById(3));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }
 
