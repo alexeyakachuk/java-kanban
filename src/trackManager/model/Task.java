@@ -7,13 +7,13 @@ public class Task {
     public Integer id;
     public String nameTask;
     public String descriptionTask;
-    public String statusTask;
+    public Status statusTask;
 
     public Task(String nameTask, String descriptionTask) {
         this.id = 0;
         this.nameTask = nameTask;
         this.descriptionTask = descriptionTask;
-        this.statusTask = "New";
+        this.statusTask = Status.NEW;
     }
 
     public Integer getId() {
@@ -40,11 +40,11 @@ public class Task {
         this.descriptionTask = descriptionTask;
     }
 
-    public String getStatusTask() {
+    public Status getStatusTask() {
         return statusTask;
     }
 
-    public void setStatusTask(String statusTask) {
+    public void setStatusTask(Status statusTask) {
         this.statusTask = statusTask;
     }
 
