@@ -9,7 +9,7 @@ import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    //    public static final int HISTORY_SIZE = 10;
+
     private Integer id = 0;
 
     private final Map<Integer, Task> taskMap = new HashMap<>();
@@ -18,8 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     private final HistoryManager historyManager;
 
-    //    private final List<Task> history = new ArrayList<>();
-//    Managers history = new Managers();
+
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
@@ -76,7 +75,6 @@ public class InMemoryTaskManager implements TaskManager {
 //        addTaskToHistory(task);
         historyManager.add(task);
 
-
         return task;
     }
 
@@ -98,26 +96,29 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Создание новой задачи
     @Override
-    public void createNewTask(Task task) {
+    public int createNewTask(Task task) {
         final int id = createNewId();
         task.setId(id);
         taskMap.put(id, task);
+        return id;
     }
 
     @Override
-    public void createNewEpic(Epic epic) {
+    public int createNewEpic(Epic epic) {
         final int id = createNewId();
         epic.setId(id);
         epicMap.put(id, epic);
+        return id;
     }
 
     @Override
-    public void createNewSubTask(SubTask subTask, Epic epic) {
+    public int createNewSubTask(SubTask subTask, Epic epic) {
         final int id = createNewId();
         subTask.setId(id);
         epic.addSubTask(subTask);
         subTask.setEpic(epic);
         subTaskMap.put(id, subTask);
+        return id;
     }
 
     //Обновление задачи

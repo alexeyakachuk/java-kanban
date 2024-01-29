@@ -37,11 +37,11 @@ public interface TaskManager {
     public SubTask getSubTaskById(Integer id);
 
     //Создание новой задачи
-    public void createNewTask(Task task);
+    public int createNewTask(Task task);
 
-    public void createNewEpic(Epic epic);
+    public int createNewEpic(Epic epic);
 
-    public void createNewSubTask(SubTask subTask, Epic epic);
+    public int createNewSubTask(SubTask subTask, Epic epic);
 
     //Обновление задачи
 
