@@ -3,70 +3,69 @@ package trackManager.controllers;
 import trackManager.model.Epic;
 import trackManager.model.SubTask;
 import trackManager.model.Task;
+
 import java.util.List;
 
 
 public interface TaskManager {
 
 
-
-
-    public Integer createNewId();
+    Integer createNewId();
 
 // Получение списка всех задачь
 
-    public List<Task> getAllTasks();
+    List<Task> getAllTasks();
 
-    public List<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
-    public List<SubTask> getAllSubtasks();
+    List<SubTask> getAllSubtasks();
 
     //Удаление всех задачь
 
-    public void deleteTasks();
+    void deleteTasks();
 
-    public void deleteEpics();
+    void deleteEpics();
 
-    public void deleteSubTasks();
+    void deleteSubTasks();
 
     //Получение по индефикатору
-    public Task getTaskById(Integer id);
+    Task getTaskById(Integer id);
 
-    public Epic getEpicById(Integer id);
+    Epic getEpicById(Integer id);
 
-    public SubTask getSubTaskById(Integer id);
+    SubTask getSubTaskById(Integer id);
 
     //Создание новой задачи
-    public int createNewTask(Task task);
+    int createNewTask(Task task);
 
-    public int createNewEpic(Epic epic);
+    int createNewEpic(Epic epic);
 
-    public int createNewSubTask(SubTask subTask, Epic epic);
+    int createNewSubTask(SubTask subTask, Epic epic);
 
     //Обновление задачи
 
-    public void updateTask(Task task);
+    void updateTask(Task task);
 
-    public void updateEpic(Epic epic);
+    void updateEpic(Epic epic);
 
-    public void updateSubTask(SubTask subTask);
+    void updateSubTask(SubTask subTask);
 
     //Удаление по индефикатору
-    public void deleteByIdTask(Integer id);
+    void deleteByIdTask(Integer id);
 
 
-    public void deleteByIdEpic(Integer id);
+    void deleteByIdEpic(Integer id);
 
 
-    public void deleteByIdSubTask(Integer id);
+    void deleteByIdSubTask(Integer id);
 
     //Получение списка всех подзадач определенного эпика
 
-    public List<SubTask> getEpicAllSubtask(Epic epic);
+    List<SubTask> getEpicAllSubtask(Epic epic);
 
 
     // Просмотр истории задачь
-    public List<Task> getHistory();
+    List<Task> getHistory();
 }
 
 
