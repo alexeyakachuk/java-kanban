@@ -187,6 +187,14 @@ public class InMemoryTaskManager implements TaskManager {
     //Просмотр истории задачь
 
     public List<Task> getHistory() {
-        return historyManager.getHistoryTasks();
+        return historyManager.getTasks();
     }
+
+    public void removeHistoryId(Integer id) {
+        historyManager.removeTask(id);
+
+
+    }
+
+
 }

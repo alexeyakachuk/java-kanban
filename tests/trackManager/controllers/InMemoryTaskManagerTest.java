@@ -7,6 +7,8 @@ import trackManager.model.SubTask;
 import trackManager.model.Task;
 import trackManager.utils.Managers;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -53,14 +55,41 @@ public class InMemoryTaskManagerTest {
         assertNotNull(savedSubTask, "Задача не найдена.");
         assertEquals(subTask, savedSubTask, "Задачи не совпадают.");
 
-//        Добрый день. Я исправил замечания только не сделал тесты для Epic и SubTask. Сама логика программы не дает это
-//        сделать. Попробовал через приведение типов компилятор тоже ругается.
-//        Наставник сказал что это ошибка в ТЗ
-//        Проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи;
-//        Проверьте, что объект Subtask нельзя сделать своим же эпиком;
-//        В пачке вас не смог найти
-
-
     }
+
+    @Test
+    void deleteByIdSubTaskTest() {
+        Epic epic = new Epic("Epic", "Описание эпика");
+        SubTask subTask = new SubTask("SubTask", "Описание сабтаски");
+        final int subTaskId = manager.createNewSubTask(subTask, epic);
+
+        List<SubTask> allSubtasks = manager.getAllSubtasks();
+        assertEquals(1, allSubtasks.size());
+        manager.deleteByIdSubTask(subTaskId);
+        allSubtasks = manager.getAllSubtasks();
+        assertEquals(0, allSubtasks.size());
+    }
+
+    @Test
+    void deleteByIdEpicTest() {
+        Epic epic = new Epic("Epic", "Описание эпика");
+        SubTask subTask = new SubTask("SubTask", "Описание сабтаски");
+        final int subTaskId = manager.createNewSubTask(subTask, epic);
+        final int newEpicID = manager.createNewEpic(epic);
+
+        List<Epic> allEpics = manager.getAllEpics();
+        assertEquals(1, allEpics.size());
+        List<SubTask> allSubtasks = manager.getAllSubtasks();
+        assertEquals(1, allSubtasks.size());
+
+        manager.deleteByIdEpic(newEpicID);
+
+        allSubtasks = manager.getAllSubtasks();
+        assertEquals(0, allSubtasks.size());
+        allEpics = manager.getAllEpics();
+        assertEquals(0, allEpics.size());
+    }
+
+
 
 }

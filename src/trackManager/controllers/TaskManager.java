@@ -66,6 +66,8 @@ public interface TaskManager {
 
     // Просмотр истории задачь
     List<Task> getHistory();
+
+    void removeHistoryId(Integer id);
 }
 
 
