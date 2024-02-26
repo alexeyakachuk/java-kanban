@@ -190,10 +190,13 @@ public class InMemoryTaskManager implements TaskManager {
         return historyManager.getTasks();
     }
 
-    public void removeHistoryId(Integer id) {
-        historyManager.removeTask(id);
-
-
+//    public void removeHistoryId(Integer id) {
+//        historyManager.removeTask(id);
+//
+//
+//    }
+    public HistoryManager getHistoryManager() {
+        return historyManager;
     }
 
 

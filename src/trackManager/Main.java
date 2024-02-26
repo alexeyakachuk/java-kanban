@@ -1,5 +1,6 @@
 package trackManager;
 
+
 import trackManager.controllers.TaskManager;
 import trackManager.model.Epic;
 import trackManager.model.Status;
@@ -12,6 +13,7 @@ public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = Managers.getDefault();
+
 
 
         Task task = new Task("Сходить в магазин", "Купить продукты");
@@ -43,10 +45,10 @@ public class Main {
 
         task.setStatusTask(Status.DONE);
         manager.updateTask(task);
-        //System.out.println(manager.getTaskById(1));
+
         task1.setStatusTask(Status.DONE);
         manager.updateTask(task1);
-        //System.out.println(manager.getTaskById(2));
+
 
         subTask.setStatusTask(Status.DONE);
         manager.updateSubTask(subTask);
@@ -81,7 +83,8 @@ public class Main {
         System.out.println(manager.getTaskById(1));
         System.out.println(manager.getEpicById(3));
 
-        manager.removeHistoryId(5);
+        manager.getHistoryManager().removeTask(5);
+
 
         System.out.println(manager.getHistory());
 

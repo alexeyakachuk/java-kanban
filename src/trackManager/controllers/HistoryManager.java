@@ -1,6 +1,5 @@
 package trackManager.controllers;
 
-import trackManager.model.Node;
 import trackManager.model.Task;
 
 import java.util.List;
@@ -13,9 +12,9 @@ public interface HistoryManager {
 
     void removeTask(Integer id);
 
-    void linkLast(Task task);
-
-    void removeNode(Node<Task> node);
+//    void linkLast(Task task);
+//
+//    void removeNode(Node<Task> node);
 
 
 }

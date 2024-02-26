@@ -1,6 +1,6 @@
 package trackManager.controllers;
 
-import trackManager.model.Node;
+
 import trackManager.model.Task;
 
 import java.util.*;
@@ -53,8 +53,8 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     }
 
-    @Override
-    public void linkLast(Task task) {
+//    @Override
+    private void linkLast(Task task) {
 
         Node<Task> node = new Node<>(task);
 
@@ -71,8 +71,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         map.put(task.id, node);
 
     }
-    @Override
-    public void removeNode(Node<Task> node) {
+//    @Override
+    private void removeNode(Node<Task> node) {
         Node<Task> prev = node.prev;
         Node<Task> next = node.next;
 
@@ -100,5 +100,17 @@ public class InMemoryHistoryManager implements HistoryManager {
         }
 
         map.remove(node.data.id);
+    }
+    private static class Node <T> {
+
+        public T data;
+        public Node<Task> next;
+        public Node<Task> prev;
+
+        public Node(T data) {
+            this.data = data;
+            this.next = null;
+            this.prev = null;
+        }
     }
 }
