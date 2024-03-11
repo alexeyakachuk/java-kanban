@@ -1,5 +1,6 @@
 package trackManager.model;
 
+import java.lang.reflect.Type;
 import java.util.Objects;
 
 public class Task {
@@ -9,11 +10,14 @@ public class Task {
     public String descriptionTask;
     public Status statusTask;
 
+    public TaskType taskType;
+
     public Task(String nameTask, String descriptionTask) {
         this.id = 0;
         this.nameTask = nameTask;
         this.descriptionTask = descriptionTask;
         this.statusTask = Status.NEW;
+        this.taskType = TaskType.TASK;
     }
 
     public Integer getId() {

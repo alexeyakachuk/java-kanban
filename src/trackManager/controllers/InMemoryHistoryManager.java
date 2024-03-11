@@ -11,7 +11,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
 
 
-    private final Map<Integer, Node<Task>> map = new HashMap<>();
+    protected final Map<Integer, Node<Task>> map = new HashMap<>();
 
     public Node<Task> head = null;
 

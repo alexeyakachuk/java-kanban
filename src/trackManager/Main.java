@@ -1,6 +1,8 @@
 package trackManager;
 
 
+import trackManager.controllers.FileBackedTaskManager;
+import trackManager.controllers.InMemoryHistoryManager;
 import trackManager.controllers.TaskManager;
 import trackManager.model.Epic;
 import trackManager.model.Status;
@@ -8,11 +10,23 @@ import trackManager.model.SubTask;
 import trackManager.model.Task;
 import trackManager.utils.Managers;
 
+import java.io.File;
+import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = Managers.getDefault();
+        FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(manager.getHistoryManager(), new File("resources/Имя.csv"));
+        fileBackedTaskManager.loadFromFile();
+        System.out.println(fileBackedTaskManager.getAllTasks());
+        System.out.println(fileBackedTaskManager.getHistory());
+        System.out.println(fileBackedTaskManager.getSubTaskById(7));
+        System.out.println(fileBackedTaskManager.getHistory());
+        System.out.println(fileBackedTaskManager.getAllTasks());
+
+
 
 
 
@@ -60,7 +74,7 @@ public class Main {
         System.out.println(epic1.getStatus());
 
 
-        System.out.println(manager.getEpicById(3));
+       System.out.println(manager.getEpicById(3));
         System.out.println(manager.getEpicById(3));
         System.out.println(manager.getEpicById(3));
         System.out.println(manager.getEpicById(3));
@@ -86,7 +100,12 @@ public class Main {
         manager.getHistoryManager().removeTask(5);
 
 
-        System.out.println(manager.getHistory());
+        System.out.println("История " + manager.getHistory());
+
+
+        System.out.println("Все задачи " + manager.getAllTasks());
+
+        System.out.println(manager.getAllTasks());
 
 
     }
