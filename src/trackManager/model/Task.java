@@ -20,6 +20,14 @@ public class Task {
         this.taskType = TaskType.TASK;
     }
 
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
+
     public Integer getId() {
         return id;
     }

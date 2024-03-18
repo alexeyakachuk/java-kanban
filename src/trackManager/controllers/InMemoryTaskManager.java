@@ -22,7 +22,14 @@ public class InMemoryTaskManager implements TaskManager {
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
+    // добавил геттер и сеттер id
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     @Override
     public Integer createNewId() {
@@ -142,6 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteByIdTask(Integer id) {
         taskMap.remove(id);
+        historyManager.removeTask(id);
     }
 
 
@@ -154,6 +162,7 @@ public class InMemoryTaskManager implements TaskManager {
                 deleteByIdSubTask(subTask.id);
             }
             epicMap.remove(id);
+            historyManager.removeTask(id);
 
         }
     }
@@ -167,10 +176,11 @@ public class InMemoryTaskManager implements TaskManager {
             Integer epicId = subTask.getEpicId();
 
             if (epicId != null) {
-                Epic epic = getEpicById(epicId);
+                Epic epic = epicMap.get(epicId);
                 epic.deleteSubTask(subTask);
             }
             subTaskMap.remove(id);
+            historyManager.removeTask(id);
 
         }
     }

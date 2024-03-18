@@ -26,8 +26,8 @@ public class Epic extends Task {
     }
 
     //Проверка статуса
-
-    public Status getStatus() {
+    @Override
+    public Status getStatusTask() {
         if (subTasks.isEmpty()) {
             return Status.NEW;
         }
@@ -52,4 +52,3 @@ public class Epic extends Task {
         }
     }
 }
-
