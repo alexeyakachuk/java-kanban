@@ -8,15 +8,11 @@ import java.util.*;
 public class InMemoryHistoryManager implements HistoryManager {
 
 
-
-
-
-    private final Map<Integer, Node<Task>> map = new HashMap<>();
+    protected final Map<Integer, Node<Task>> map = new HashMap<>();
 
     public Node<Task> head = null;
 
     public Node<Task> tail = null;
-
 
 
     @Override
@@ -36,7 +32,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (task != null) {
             Node<Task> taskNode = map.get(task.id);
-            if(taskNode != null) {
+            if (taskNode != null) {
                 removeNode(taskNode);
             }
             linkLast(task);
@@ -53,16 +49,16 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     }
 
-//    @Override
+    //    @Override
     private void linkLast(Task task) {
 
         Node<Task> node = new Node<>(task);
 
-        if(head == null) {
+        if (head == null) {
             head = node;
         }
         node.prev = tail;
-        if(node.prev != null) {
+        if (node.prev != null) {
             node.prev.next = node;
         }
 
@@ -71,37 +67,40 @@ public class InMemoryHistoryManager implements HistoryManager {
         map.put(task.id, node);
 
     }
-//    @Override
+
+    //    @Override
     private void removeNode(Node<Task> node) {
         Node<Task> prev = node.prev;
         Node<Task> next = node.next;
 
         //Если удаляем из середины, то просто меняем ссылки
-        if(prev != null && next != null){
+        if (prev != null && next != null) {
             prev.next = next;
             next.prev = prev;
         }
 
-        //Если удаляем head
 
-        if(prev == null && next == null) {
-           head = null;
-           tail = null;
+        if (prev == null && next == null) {
+            head = null;
+            tail = null;
         }
 
-
+           //Если удаляем head
         if (prev == null && next != null) {
             head = next;
+            head.prev = null;
         }
 
         //Если удаляем tail
         if (prev != null && next == null) {
             tail = prev;
+            prev.next = null;
         }
 
         map.remove(node.data.id);
     }
-    private static class Node <T> {
+
+    private static class Node<T> {
 
         public T data;
         public Node<Task> next;

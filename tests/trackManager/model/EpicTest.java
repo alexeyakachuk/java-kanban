@@ -3,9 +3,6 @@ package trackManager.model;
 import org.junit.jupiter.api.Test;
 
 import trackManager.controllers.TaskManager;
-import trackManager.model.Epic;
-import trackManager.model.Status;
-import trackManager.model.SubTask;
 import trackManager.utils.Managers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,7 +18,7 @@ class EpicTest {
         Epic epic = new Epic("Epic", "Описание epic");
         manager.createNewEpic(epic);
 
-        Status status = epic.getStatus();
+        Status status = epic.getStatusTask();
 
         assertEquals(status, Status.NEW);
     }
@@ -36,7 +33,7 @@ class EpicTest {
         manager.createNewSubTask(subTask, epic);
         manager.createNewSubTask(subTask1, epic);
 
-        Status status = epic.getStatus();
+        Status status = epic.getStatusTask();
 
         assertEquals(status, Status.NEW);
     }
@@ -54,7 +51,7 @@ class EpicTest {
         subTask1.setStatusTask(Status.DONE);
         manager.updateSubTask(subTask1);
 
-        Status status = epic.getStatus();
+        Status status = epic.getStatusTask();
 
         assertEquals(status, Status.DONE);
     }
@@ -70,7 +67,7 @@ class EpicTest {
         subTask.setStatusTask(Status.DONE);
         manager.updateSubTask(subTask);
 
-        Status status = epic.getStatus();
+        Status status = epic.getStatusTask();
 
         assertEquals(status, Status.IN_PROGRESS);
     }

@@ -9,6 +9,7 @@ public class Epic extends Task {
 
     public Epic(String nameTask, String descriptionTask) {
         super(nameTask, descriptionTask);
+        this.taskType = TaskType.EPIC;
     }
 
     public List<SubTask> getSubTasks() {
@@ -25,8 +26,8 @@ public class Epic extends Task {
     }
 
     //Проверка статуса
-
-    public Status getStatus() {
+    @Override
+    public Status getStatusTask() {
         if (subTasks.isEmpty()) {
             return Status.NEW;
         }
@@ -51,4 +52,3 @@ public class Epic extends Task {
         }
     }
 }
-

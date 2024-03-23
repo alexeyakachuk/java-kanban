@@ -1,0 +1,8 @@
+id,type,name,status,description,epic
+2,TASK,Прибратся,DONE,Разложить вещи
+8,TASK,задача,NEW,описание
+9,TASK,задача 1,NEW,описание
+7,SUBTASK,Купить обои,DONE,Выбрать обои,6
+6,EPIC,Ремонт,NEW,Поклеить обои
+
+6,7,8,9
