@@ -1,8 +1,6 @@
-id,type,name,status,description,epic
-2,TASK,Прибратся,DONE,Разложить вещи
-8,TASK,задача,NEW,описание
-9,TASK,задача 1,NEW,описание
-7,SUBTASK,Купить обои,DONE,Выбрать обои,6
-6,EPIC,Ремонт,NEW,Поклеить обои
+id,type,name,status,description,epic,startTime 
+2,TASK,Прибратся,DONE,Разложить вещи,null,2024-03-25 20:24:42
+7,SUBTASK,Купить обои,DONE,Выбрать обои,6,2024-03-25 20:24:42
+6,EPIC,Ремонт,DONE,Поклеить обои,null,2024-03-25 20:24:42
 
-6,7,8,9
+6,7

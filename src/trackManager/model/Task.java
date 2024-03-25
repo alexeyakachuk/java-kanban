@@ -1,9 +1,13 @@
 package trackManager.model;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
+
 
     public Integer id;
     public String nameTask;
@@ -11,6 +15,10 @@ public class Task {
     public Status statusTask;
 
     public TaskType taskType;
+    public LocalDateTime startTime;
+    public LocalDateTime endTime;
+    public Duration duration;
+    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Task(String nameTask, String descriptionTask) {
         this.id = 0;
@@ -18,6 +26,32 @@ public class Task {
         this.descriptionTask = descriptionTask;
         this.statusTask = Status.NEW;
         this.taskType = TaskType.TASK;
+        this.startTime = LocalDateTime.now();
+
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public DateTimeFormatter getFormatter() {
+        return formatter;
+    }
+
+    public Integer getEpicId() {
+        return null;
     }
 
     public TaskType getTaskType() {
@@ -65,14 +99,14 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) && Objects.equals(descriptionTask, task.descriptionTask) && Objects.equals(statusTask, task.statusTask);
+        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) &&
+                Objects.equals(descriptionTask, task.descriptionTask) && Objects.equals(statusTask, task.statusTask);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, nameTask, descriptionTask, statusTask);
     }
-
 
 
     @Override
@@ -82,6 +116,8 @@ public class Task {
                 ", nameTask='" + nameTask + '\'' +
                 ", descriptionTask='" + descriptionTask + '\'' +
                 ", statusTask='" + statusTask + '\'' +
+                // ", epicId=" + null + '\'' +
+                ", startTime=" + startTime.format(formatter) +
                 '}';
     }
 }

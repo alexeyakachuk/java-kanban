@@ -1,12 +1,9 @@
 package trackManager.model;
 
 
-
 import java.util.Objects;
 
 public class SubTask extends Task {
-
-
 
 
     private Integer epicId;
@@ -16,6 +13,7 @@ public class SubTask extends Task {
         this.taskType = TaskType.SUBTASK;
     }
 
+    @Override
     public Integer getEpicId() {
         return epicId;
 
@@ -49,6 +47,7 @@ public class SubTask extends Task {
                 ", statusTask=" + statusTask +
                 ", taskType=" + taskType +
                 ", epicId=" + epicId +
+                ", startTime=" + startTime.format(formatter) +
                 '}';
     }
 }

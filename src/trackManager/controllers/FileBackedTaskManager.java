@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -93,7 +94,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (FileWriter fileWriter = new FileWriter(file)) {
 
 
-            fileWriter.write("id,type,name,status,description,epic \n");
+            fileWriter.write("id,type,name,status,description,epic,startTime \n");
             for (Task allTask : getAllTasks()) {
                 fileWriter.write(toString(allTask) + "\n");
 
@@ -234,10 +235,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         if (task.taskType == TaskType.SUBTASK) {
             SubTask subTask = (SubTask) task;
             return subTask.getId() + "," + subTask.getTaskType() + "," + subTask.getNameTask() + ","
-                    + subTask.getStatusTask() + "," + subTask.getDescriptionTask() + "," + subTask.getEpicId();
+                    + subTask.getStatusTask() + "," + subTask.getDescriptionTask() + "," + subTask.getEpicId() + "," +
+                    subTask.getStartTime().format(subTask.getFormatter());
         }
         return task.getId() + "," + task.getTaskType() + "," + task.getNameTask() + "," + task.getStatusTask() +
-                "," + task.getDescriptionTask();
+                "," + task.getDescriptionTask() + "," + task.getEpicId() + "," +
+                task.getStartTime().format(task.getFormatter());
     }
 
 
