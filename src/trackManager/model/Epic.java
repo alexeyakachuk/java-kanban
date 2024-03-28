@@ -1,16 +1,21 @@
 package trackManager.model;
 
+//import javax.xml.datatype.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.Duration;
 
 public class Epic extends Task {
 
     private final List<SubTask> subTasks = new ArrayList<>();
 
-    public Epic(String nameTask, String descriptionTask) {
-        super(nameTask, descriptionTask);
+    public Epic(String nameTask, String descriptionTask, LocalDateTime startTime,Duration duration) {
+        super(nameTask, descriptionTask, startTime, duration);
         this.taskType = TaskType.EPIC;
     }
+
+
 
     public List<SubTask> getSubTasks() {
         return subTasks;

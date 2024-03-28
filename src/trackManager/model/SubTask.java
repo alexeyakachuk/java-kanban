@@ -1,6 +1,8 @@
 package trackManager.model;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -8,8 +10,8 @@ public class SubTask extends Task {
 
     private Integer epicId;
 
-    public SubTask(String nameTask, String descriptionTask) {
-        super(nameTask, descriptionTask);
+    public SubTask(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
+        super(nameTask, descriptionTask, startTime, duration);
         this.taskType = TaskType.SUBTASK;
     }
 

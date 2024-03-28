@@ -1,6 +1,5 @@
 package trackManager.model;
 
-import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,13 +19,14 @@ public class Task {
     public Duration duration;
     protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public Task(String nameTask, String descriptionTask) {
+    public Task(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         this.id = 0;
         this.nameTask = nameTask;
         this.descriptionTask = descriptionTask;
         this.statusTask = Status.NEW;
         this.taskType = TaskType.TASK;
-        this.startTime = LocalDateTime.now();
+        this.startTime = startTime;
+        this.duration = duration;
 
     }
 
@@ -44,6 +44,10 @@ public class Task {
 
     public Duration getDuration() {
         return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
     }
 
     public DateTimeFormatter getFormatter() {
@@ -117,7 +121,16 @@ public class Task {
                 ", descriptionTask='" + descriptionTask + '\'' +
                 ", statusTask='" + statusTask + '\'' +
                 // ", epicId=" + null + '\'' +
-                ", startTime=" + startTime.format(formatter) +
+                ", startTime=" + startTime.format(formatter) + '\'' +
+                "duration=" + duration.toMinutes() + '\'' +
                 '}';
     }
+
+//    public Duration setTaskDuration() {
+//        if(statusTask == Status.DONE) {
+//            duration = Duration.between(startTime, LocalDateTime.now());
+//        }
+//        return duration;
+//    }
+
 }
