@@ -1,6 +1,7 @@
-id,type,name,status,description,epic,startTime,duration 
-2,TASK,Прибратся,DONE,Разложить вещи,null,2024-10-06 23:45:00,10
-7,SUBTASK,Купить обои,DONE,Выбрать обои,6,2024-10-17 09:45:00,10
-6,EPIC,Ремонт,DONE,Поклеить обои,null,2024-09-25 10:15:00,5
+id,type,name,status,description,epic,startTime,duration,endTime 
+1,TASK,задача 1,DONE,описание,null,2024-03-27 14:09:00,1500,2024-03-28T15:09
+3,SUBTASK,subTask,DONE,описание,2,2023-03-11 10:00:00,10,2023-03-11T10:10
+4,SUBTASK,subTask,DONE,описание,2,2023-03-12 10:00:00,10,2023-03-12T10:10
+2,EPIC,epic,DONE,описание,null,2023-03-11 10:00:00,1450,2023-03-12T10:10
 
-6,7
+1,2,3

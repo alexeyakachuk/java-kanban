@@ -39,7 +39,15 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return endTime;
+        if (getStatusTask() == Status.DONE) {
+            return startTime.plus(duration);
+        } else {
+            return null;
+        }
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public Duration getDuration() {
@@ -123,6 +131,7 @@ public class Task {
                 // ", epicId=" + null + '\'' +
                 ", startTime=" + startTime.format(formatter) + '\'' +
                 "duration=" + duration.toMinutes() + '\'' +
+                "endTime=" + endTime + '\'' +
                 '}';
     }
 
@@ -132,5 +141,6 @@ public class Task {
 //        }
 //        return duration;
 //    }
+
 
 }

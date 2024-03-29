@@ -95,7 +95,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (FileWriter fileWriter = new FileWriter(file)) {
 
 
-            fileWriter.write("id,type,name,status,description,epic,startTime,duration \n");
+            fileWriter.write("id,type,name,status,description,epic,startTime,duration,endTime \n");
             for (Task allTask : getAllTasks()) {
                 fileWriter.write(toString(allTask) + "\n");
 
@@ -237,11 +237,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             SubTask subTask = (SubTask) task;
             return subTask.getId() + "," + subTask.getTaskType() + "," + subTask.getNameTask() + ","
                     + subTask.getStatusTask() + "," + subTask.getDescriptionTask() + "," + subTask.getEpicId() + "," +
-                    subTask.getStartTime().format(subTask.getFormatter()) + "," + subTask.getDuration().toMinutes();
+                    subTask.getStartTime().format(subTask.getFormatter()) + "," + subTask.getDuration().toMinutes() +
+                     "," + task.getEndTime();
         }
         return task.getId() + "," + task.getTaskType() + "," + task.getNameTask() + "," + task.getStatusTask() +
                 "," + task.getDescriptionTask() + "," + task.getEpicId() + "," +
-                task.getStartTime().format(task.getFormatter()) + "," + task.getDuration().toMinutes();
+                task.getStartTime().format(task.getFormatter()) + "," + task.getDuration().toMinutes() +
+                "," + task.getEndTime();
     }
 
 
@@ -258,6 +260,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Integer epicId = Integer.parseInt(columns[5]);
         LocalDateTime startTime = LocalDateTime.parse(columns[6]);
         Duration duration = Duration.ofMinutes(Integer.parseInt(columns[7]));
+        LocalDateTime endTime = LocalDateTime.parse(columns[8]);
         if (taskType == TaskType.SUBTASK) {
 
             SubTask subTask = new SubTask(nameTask, descriptionTask, startTime, duration);
@@ -267,6 +270,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             subTask.setEpicId(epicId);
             subTask.setStartTime(startTime);
             subTask.setDuration(duration);
+            subTask.setEndTime(endTime);
             return subTask;
         }
         if (taskType == TaskType.EPIC) {
@@ -276,6 +280,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             epic.setTaskType(taskType);
             epic.setStartTime(startTime);
             epic.setDuration(duration);
+            epic.setEndTime(endTime);
             return epic;
         }
         Task task = new Task(nameTask, descriptionTask, startTime, duration);
@@ -284,6 +289,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         task.setTaskType(taskType);
         task.setStartTime(startTime);
         task.setDuration(duration);
+        task.setEndTime(endTime);
         return task;
     }
 
