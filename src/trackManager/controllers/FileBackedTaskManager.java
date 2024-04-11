@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,15 +52,26 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 for (Task task : values) {
                     if (task.taskType == TaskType.TASK) {
                         fileBackedTaskManager.taskMap.put(task.getId(), task);
+                        if (task.getStartTime() != null) {
+                            fileBackedTaskManager.prioritizedTasks.add(task);
+                        }
                     }
                     if (task.taskType == TaskType.EPIC) {
                         fileBackedTaskManager.epicMap.put(task.getId(), (Epic) task);
+                        if (task.getStartTime() != null) {
+                            fileBackedTaskManager.prioritizedTasks.add(task);
+                        }
                     }
                     if (task.taskType == TaskType.SUBTASK) {
                         fileBackedTaskManager.subTaskMap.put(task.getId(), (SubTask) task);
+                        if (task.getStartTime() != null) {
+                            fileBackedTaskManager.prioritizedTasks.add(task);
+                        }
+
                     }
 
                 }
+
             }
             List<Integer> idTask = historyFromString(idTaskOfHistory);
             for (Integer id : idTask) {
@@ -100,7 +112,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 fileWriter.write(toString(allTask) + "\n");
 
             }
-            for (Task allTask : getAllSubtasks()) {
+            for (Task allTask : getAllSubTasks()) {
                 fileWriter.write(toString(allTask) + "\n");
 
             }
@@ -233,17 +245,48 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private static String toString(Task task) {
 //        id,type,name,status,description,epic
+
+        String time = parseTime(task.getStartTime());
+        String time1 = parseTime(task.getEndTime());
+        Duration duration = parseDuration(task.getDuration());
+
         if (task.taskType == TaskType.SUBTASK) {
             SubTask subTask = (SubTask) task;
+
             return subTask.getId() + "," + subTask.getTaskType() + "," + subTask.getNameTask() + ","
                     + subTask.getStatusTask() + "," + subTask.getDescriptionTask() + "," + subTask.getEpicId() + "," +
-                    subTask.getStartTime().format(subTask.getFormatter()) + "," + subTask.getDuration().toMinutes() +
-                     "," + task.getEndTime();
+                    parseTime(subTask.getStartTime()) + "," + parseDuration(subTask.getDuration()) +
+                    "," + time1;
         }
+
         return task.getId() + "," + task.getTaskType() + "," + task.getNameTask() + "," + task.getStatusTask() +
                 "," + task.getDescriptionTask() + "," + task.getEpicId() + "," +
-                task.getStartTime().format(task.getFormatter()) + "," + task.getDuration().toMinutes() +
-                "," + task.getEndTime();
+                time + "," + duration +
+                "," + time1;
+    }
+
+    public static Duration parseDuration(Duration duration) {
+
+        if(duration != null) {
+            return Duration.ofMinutes(duration.toMinutes());
+        }
+        return null;
+
+    }
+
+    public static String parseTime(LocalDateTime time) {
+        if (time != null) {
+            return time.format(FORMATTER);
+
+        }
+        return null;
+
+    }
+    public static Duration getDurationFromString(String value) {
+        if(!value.equals("null")) {
+            return Duration.parse(value);
+        }
+        return null;
     }
 
 
@@ -257,10 +300,27 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         String nameTask = columns[2];
         Status statusTask = Status.valueOf(columns[3]);
         String descriptionTask = columns[4];
-        Integer epicId = Integer.parseInt(columns[5]);
-        LocalDateTime startTime = LocalDateTime.parse(columns[6]);
-        Duration duration = Duration.ofMinutes(Integer.parseInt(columns[7]));
-        LocalDateTime endTime = LocalDateTime.parse(columns[8]);
+        Integer epicId;
+        if (columns[5].equals("null")) {
+            epicId = null;
+        } else {
+            epicId = Integer.parseInt(columns[5]);
+        }
+        //LocalDateTime startTime = LocalDateTime.parse(columns[6], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        LocalDateTime startTime;
+        if (columns[6].equals("null")) {
+            startTime = null;
+        } else {
+            startTime = LocalDateTime.parse(columns[6], DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        }
+        Duration duration = getDurationFromString(columns[7]);
+
+        LocalDateTime endTime;
+        if (columns[8].equals("null")) {
+            endTime = null;
+        } else {
+            endTime = LocalDateTime.parse(columns[8]);
+        }
         if (taskType == TaskType.SUBTASK) {
 
             SubTask subTask = new SubTask(nameTask, descriptionTask, startTime, duration);

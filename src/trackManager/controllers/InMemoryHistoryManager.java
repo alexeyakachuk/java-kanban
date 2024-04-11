@@ -70,6 +70,10 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     //    @Override
     private void removeNode(Node<Task> node) {
+        if(node == null) {
+            return;
+        }
+
         Node<Task> prev = node.prev;
         Node<Task> next = node.next;
 
@@ -85,7 +89,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             tail = null;
         }
 
-           //Если удаляем head
+        //Если удаляем head
         if (prev == null && next != null) {
             head = next;
             head.prev = null;
@@ -112,4 +116,17 @@ public class InMemoryHistoryManager implements HistoryManager {
             this.prev = null;
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        List<Task> tasks = getTasks();
+        for (Task task : tasks) {
+            sb.append(task.toString()).append(", ");
+        }
+
+        return sb.toString();
+    }
+
 }

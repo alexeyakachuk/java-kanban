@@ -10,11 +10,13 @@ import trackManager.model.Task;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
     File file;
 
     @BeforeEach
@@ -49,7 +51,7 @@ class FileBackedTaskManagerTest {
 
         List<Task> allTasks = fileBackedTaskManager.getAllTasks();
         List<Epic> allEpics = fileBackedTaskManager.getAllEpics();
-        List<SubTask> allSubtasks = fileBackedTaskManager.getAllSubtasks();
+        List<SubTask> allSubtasks = fileBackedTaskManager.getAllSubTasks();
         List<Task> history = fileBackedTaskManager.getHistory();
 
         assertEquals(1, allTasks.size());
@@ -63,12 +65,16 @@ class FileBackedTaskManagerTest {
     void updateTest() {
         FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFormFile(file);
         Task taskById = fileBackedTaskManager.getTaskById(1);
+        taskById.setStartTime(LocalDateTime.of(2024, 10, 5, 10, 5, 0));
+        taskById.setDuration(Duration.ofMinutes(10));
         taskById.setStatusTask(Status.DONE);
         fileBackedTaskManager.updateTask(taskById);
         Status statusTask = taskById.getStatusTask();
         assertEquals(statusTask, Status.DONE);
 
         SubTask subTaskById = fileBackedTaskManager.getSubTaskById(3);
+        subTaskById.setStartTime(LocalDateTime.of(2024, 10, 5 , 11, 5, 0));
+        subTaskById.setDuration(Duration.ofMinutes(10));
         subTaskById.setStatusTask(Status.IN_PROGRESS);
         fileBackedTaskManager.updateSubTask(subTaskById);
         Status statusSubTask = subTaskById.getStatusTask();
@@ -77,6 +83,15 @@ class FileBackedTaskManagerTest {
         Epic epicById = fileBackedTaskManager.getEpicById(2);
         Status statusEpic = epicById.getStatusTask();
         assertEquals(statusEpic, Status.IN_PROGRESS);
+
+        subTaskById.setStatusTask(Status.DONE);
+        fileBackedTaskManager.updateSubTask(subTaskById);
+        statusSubTask = subTaskById.getStatusTask();
+        assertEquals(statusSubTask, Status.DONE);
+        statusEpic = epicById.getStatusTask();
+        assertEquals(statusEpic, Status.DONE);
+        System.out.println(epicById.getStartTime());
+        System.out.println(epicById.getEndTime());
 
 
     }
@@ -91,7 +106,7 @@ class FileBackedTaskManagerTest {
         assertEquals(0, allTasks.size());
 
         fileBackedTaskManager.deleteByIdSubTask(3);
-        List<SubTask> allSubtasks = fileBackedTaskManager.getAllSubtasks();
+        List<SubTask> allSubtasks = fileBackedTaskManager.getAllSubTasks();
         assertEquals(0, allSubtasks.size());
 
         fileBackedTaskManager.deleteByIdEpic(2);

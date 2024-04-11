@@ -18,7 +18,7 @@ public interface TaskManager {
 
     List<Epic> getAllEpics();
 
-    List<SubTask> getAllSubtasks();
+    List<SubTask> getAllSubTasks();
 
     //Удаление всех задачь
 
@@ -70,4 +70,5 @@ public interface TaskManager {
     HistoryManager getHistoryManager();
 
 
+    boolean isTimeOverlapping(Task first, Task second);
 }

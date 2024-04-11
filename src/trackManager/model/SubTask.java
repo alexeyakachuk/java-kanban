@@ -5,6 +5,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static trackManager.controllers.FileBackedTaskManager.parseTime;
+
+
 public class SubTask extends Task {
 
 
@@ -12,6 +15,11 @@ public class SubTask extends Task {
 
     public SubTask(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         super(nameTask, descriptionTask, startTime, duration);
+        this.taskType = TaskType.SUBTASK;
+    }
+
+    public SubTask(String nameTask, String descriptionTask) {
+        super(nameTask, descriptionTask);
         this.taskType = TaskType.SUBTASK;
     }
 
@@ -43,13 +51,14 @@ public class SubTask extends Task {
     public String toString() {
         return "SubTask{" +
 
-                "id=" + id +
+                "id=" + id + '\'' +
+                "type=" + taskType + '\'' +
                 ", nameTask='" + nameTask + '\'' +
                 ", descriptionTask='" + descriptionTask + '\'' +
-                ", statusTask=" + statusTask +
-                ", taskType=" + taskType +
-                ", epicId=" + epicId +
-                ", startTime=" + startTime.format(formatter) +
+                ", statusTask=" + statusTask + '\'' +
+                ", taskType=" + taskType + '\'' +
+                ", epicId=" + epicId + '\'' +
+                ", startTime=" + parseTime(startTime) + '\'' +
                 '}';
     }
 }

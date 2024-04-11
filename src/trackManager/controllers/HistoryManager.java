@@ -12,9 +12,7 @@ public interface HistoryManager {
 
     void removeTask(Integer id);
 
-//    void linkLast(Task task);
-//
-//    void removeNode(Node<Task> node);
+
 
 
 }
