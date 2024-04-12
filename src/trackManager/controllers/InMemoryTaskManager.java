@@ -118,12 +118,35 @@ public class InMemoryTaskManager implements TaskManager {
     //Создание новой задачи
     @Override
     public int createNewTask(Task task) {
-
+        addToPrioritizedTasks(task);
         final int id = createNewId();
         task.setId(id);
         taskMap.put(id, task);
 
-        addToPrioritizedTasks(task);
+        return id;
+    }
+
+
+
+    @Override
+    public int createNewEpic(Epic epic) {
+        addToPrioritizedTasks(epic);
+        final int id = createNewId();
+        epic.setId(id);
+        epicMap.put(id, epic);
+
+        return id;
+    }
+
+    @Override
+    public int createNewSubTask(SubTask subTask, Epic epic) {
+        addToPrioritizedTasks(subTask);
+        final int id = createNewId();
+        subTask.setId(id);
+        epic.addSubTask(subTask);
+        subTask.setEpicId(epic.getId());
+        subTaskMap.put(id, subTask);
+
         return id;
     }
 
@@ -140,32 +163,6 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    @Override
-    public int createNewEpic(Epic epic) {
-
-        final int id = createNewId();
-        epic.setId(id);
-        epicMap.put(id, epic);
-
-        addToPrioritizedTasks(epic);
-        return id;
-    }
-
-    @Override
-    public int createNewSubTask(SubTask subTask, Epic epic) {
-
-        final int id = createNewId();
-        subTask.setId(id);
-        epic.addSubTask(subTask);
-        subTask.setEpicId(epic.getId());
-        epic.setStartTime();
-        subTaskMap.put(id, subTask);
-
-
-        addToPrioritizedTasks(subTask);
-        return id;
-    }
-
     //Обновление задачи
 
     @Override
@@ -177,15 +174,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateEpic(Epic epic) {
         epicMap.put(epic.id, epic);
-        addToPrioritizedTasks(epic);
+
     }
 
     @Override
     public void updateSubTask(SubTask subTask) {
-        Integer epicId = subTask.getEpicId();
-        Epic epic = epicMap.get(epicId);
-        epic.setStartTime(subTask.getStartTime());
-        epic.setDuration(subTask.getDuration());
         subTaskMap.put(subTask.id, subTask);
         addToPrioritizedTasks(subTask);
 

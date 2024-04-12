@@ -106,14 +106,19 @@ public class Epic extends Task {
         return min;
     }
 
+
+
     @Override
     public Duration getDuration() {
-        LocalDateTime startTime = getStartTime();
-        LocalDateTime endTime = getEndTime();
 
-        if(endTime == null) {
-            return Duration.ofMinutes(0);
+        Duration totalDuration = Duration.ofMinutes(0);
+//
+        for(Task subTask : subTasks) {
+            if (subTask.getDuration() != null) {
+                totalDuration = totalDuration.plus(subTask.getDuration());
+            }
         }
-        return Duration.between(startTime, endTime);
+
+        return totalDuration;
     }
 }

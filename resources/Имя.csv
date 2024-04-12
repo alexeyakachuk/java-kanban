@@ -4,7 +4,7 @@ id,type,name,status,description,epic,startTime,duration,endTime
 3,SUBTASK,subTask,NEW,описание,2,2024-01-01 09:10:00,PT10M,2024-01-01 09:20:00
 4,SUBTASK,subTask,NEW,описание,2,2024-01-01 10:10:00,PT20M,2024-01-01 10:30:00
 8,SUBTASK,subTask,NEW,описание Subtask1,6,2024-02-01 10:10:00,PT10M,2024-02-01 10:20:00
-2,EPIC,epic,NEW,писание,null,2024-01-01 09:10:00,PT1H20M,2024-01-01 10:30:00
+2,EPIC,epic,NEW,писание,null,2024-01-01 09:10:00,PT30M,2024-01-01 10:30:00
 6,EPIC,epic,NEW,писание Epic,null,2024-02-01 10:10:00,PT10M,2024-02-01 10:20:00
 
 3,4
