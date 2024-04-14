@@ -2,7 +2,7 @@ package trackManager;
 
 
 import trackManager.controllers.FileBackedTaskManager;
-import trackManager.controllers.InMemoryHistoryManager;
+import trackManager.controllers.InMemoryTaskManager;
 import trackManager.controllers.TaskManager;
 import trackManager.model.Epic;
 import trackManager.model.Status;
@@ -11,6 +11,8 @@ import trackManager.model.Task;
 import trackManager.utils.Managers;
 
 import java.io.File;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -19,112 +21,52 @@ public class Main {
 
         //TaskManager manager = Managers.getDefault();
         FileBackedTaskManager manager = FileBackedTaskManager.loadFormFile(new File("resources/Имя.csv"));
-//        manager.loadFromFile();
-//        System.out.println(manager.getAllTasks());
-//        System.out.println(manager.getHistory());
-//        System.out.println(manager.getSubTaskById(7));
-//        System.out.println(manager.getHistory());
-//        System.out.println(manager.getAllTasks());
-        //FileBackedTaskManager.loadFormFile(new File("resources/Имя.csv"));
-
-
-        System.out.println(manager.getAllTasks());
-        System.out.println(manager.getAllEpics());
-        System.out.println(manager.getAllSubtasks());
-
+// конструктор с 4 параметрами
+        Task task = new Task("task", "описание",
+                LocalDateTime.of(2024, 1, 1, 11, 10, 0),
+                Duration.ofMinutes(10));
+        Epic epic = new Epic("epic", "писание");
+        SubTask subTask = new SubTask("subTask", "описание",
+                LocalDateTime.of(2024, 1, 1, 9, 10, 0),
+                Duration.ofMinutes(10));
+        SubTask subTask1 = new SubTask("subTask", "описание",
+                LocalDateTime.of(2024, 1, 1, 10, 10, 0),
+                Duration.ofMinutes(20));
+        int newIdTask = manager.createNewTask(task);
+        int newIdEpic = manager.createNewEpic(epic);
+        int newIdSubTask = manager.createNewSubTask(subTask, epic);
+        int newIdSubTask1 = manager.createNewSubTask(subTask1, epic);
+        manager.getSubTaskById(newIdSubTask);
+        manager.getSubTaskById(newIdSubTask1);
         System.out.println(manager.getHistory());
 
-        Task task = new Task("задача 1", "описание");
-        int lastId = manager.createNewTask(task);
-        manager.getTaskById(lastId);
-        System.out.println(manager.getHistory());
-//
 
 
-//        Task task = new Task("Сходить в магазин", "Купить продукты");
-//        Task task1 = new Task("Прибратся", "Разложить вещи");
-//
-//        Epic epic = new Epic("Переезд", "Подготовить вещи к переезду");
-//        SubTask subTask = new SubTask("Собрать ниги",
-//                "Сложить книги в коробки");
-//        SubTask subTask1 = new SubTask("Собрать одежду",
-//                "Сложить одежду в коробки");
-//
-//        Epic epic1 = new Epic("Ремонт", "Поклеить обои");
-//        SubTask subTask2 = new SubTask("Купить обои", "Выбрать обои");
-//
-//
-//        manager.createNewTask(task);
-//        manager.createNewTask(task1);
-//
-//        manager.createNewEpic(epic);
-//        manager.createNewSubTask(subTask, epic);
-//        manager.createNewSubTask(subTask1, epic);
-//
-//        manager.createNewEpic(epic1);
-//        manager.createNewSubTask(subTask2, epic1);
-//
-//        System.out.println(manager.getAllTasks());
-//        System.out.println(manager.getAllEpics());
-//        System.out.println(manager.getAllSubtasks());
-//
-//        task.setStatusTask(Status.DONE);
-//        manager.updateTask(task);
-//
-//        task1.setStatusTask(Status.DONE);
-//        manager.updateTask(task1);
-//
-//
-//        subTask.setStatusTask(Status.DONE);
-//        manager.updateSubTask(subTask);
-//        subTask2.setStatusTask(Status.DONE);
-//        manager.updateSubTask(subTask2);
-//
-//
-//        System.out.println(epic.getStatus());
-//        System.out.println(epic1.getStatus());
-//
-//
-//        System.out.println(manager.getEpicById(3));
-//        System.out.println(manager.getEpicById(3));
-//        System.out.println(manager.getEpicById(3));
-//        System.out.println(manager.getEpicById(3));
-//        System.out.println(manager.getSubTaskById(4));
-//        System.out.println(manager.getSubTaskById(5));
-//        System.out.println(manager.getSubTaskById(5));
-//        System.out.println(manager.getEpicById(6));
-//        System.out.println(manager.getSubTaskById(7));
-//        System.out.println(manager.getSubTaskById(7));
-//        System.out.println(manager.getSubTaskById(7));
-//        System.out.println(manager.getSubTaskById(7));
-//        System.out.println(manager.getTaskById(1));
-//        System.out.println(epic1.getStatus());
-//
-//        System.out.println(manager.getHistory());
-//
-//        manager.deleteByIdTask(1);
-//        manager.deleteByIdSubTask(4);
-//        manager.deleteByIdEpic(3);
-//
-//
-//        System.out.println(manager.getTaskById(1));
-//        System.out.println(manager.getEpicById(3));
-//
-//        // manager.getHistoryManager().removeTask(5);
-//
-//
-//        System.out.println("История " + manager.getHistory());
-//
-//
-//        System.out.println("Все задачи " + manager.getAllTasks());
-//
-//        System.out.println(manager.getAllTasks());
-//
-//        System.out.println(manager.getHistory());
-//
-//        System.out.println(manager.getHistoryManager());
+
+// конструктор с 2 параметрами
+        Task taskNew = new Task("task", "описание Task");
+        Epic epicNew = new Epic("epic", "писание Epic");
+        SubTask subTaskNew = new SubTask("subTask", "описание Subtask");
+        SubTask subTaskNew1 = new SubTask("subTask", "описание Subtask1");
+        int idTask = manager.createNewTask(taskNew);
+        int idEpic = manager.createNewEpic(epicNew);
+        int idSubTask = manager.createNewSubTask(subTaskNew, epicNew);
+        int idSubTask1 = manager.createNewSubTask(subTaskNew1, epicNew);
+
+        subTaskNew.setStartTime(LocalDateTime.of(2024,2,1,9,10,0));
+        subTaskNew.setDuration(Duration.ofMinutes(10));
+        manager.updateSubTask(subTaskNew);
 
 
+        subTaskNew1.setStartTime(LocalDateTime.of(2024,2,1,10,10,0));
+        subTaskNew1.setDuration(Duration.ofMinutes(10));
+        manager.updateSubTask(subTaskNew1);
+
+        System.out.println(manager.getPrioritizedTasks());
+
+        manager.deleteByIdSubTask(idSubTask);
+
+        System.out.println(manager.getPrioritizedTasks());
     }
 }
 

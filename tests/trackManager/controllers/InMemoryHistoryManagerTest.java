@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryHistoryManagerTest {
+class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     HistoryManager historyManager = Managers.getDefaultHistory();
     TaskManager manager = Managers.getDefault();
@@ -26,7 +26,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task);
         historyManager.add(task);
 
-         List<Task> history = historyManager.getTasks();
+        List<Task> history = historyManager.getTasks();
 
         assertNotNull(history, "История не пустая.");
         assertEquals(1, history.size(), "История не пустая.");

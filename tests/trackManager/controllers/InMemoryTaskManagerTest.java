@@ -61,30 +61,32 @@ public class InMemoryTaskManagerTest {
     void deleteByIdSubTaskTest() {
         Epic epic = new Epic("Epic", "Описание эпика");
         SubTask subTask = new SubTask("SubTask", "Описание сабтаски");
+        final int epicId = manager.createNewEpic(epic);
         final int subTaskId = manager.createNewSubTask(subTask, epic);
 
-        List<SubTask> allSubtasks = manager.getAllSubtasks();
+        List<SubTask> allSubtasks = manager.getAllSubTasks();
         assertEquals(1, allSubtasks.size());
         manager.deleteByIdSubTask(subTaskId);
-        allSubtasks = manager.getAllSubtasks();
+        allSubtasks = manager.getAllSubTasks();
         assertEquals(0, allSubtasks.size());
     }
 
     @Test
     void deleteByIdEpicTest() {
         Epic epic = new Epic("Epic", "Описание эпика");
+        final int newEpicID = manager.createNewEpic(epic);
         SubTask subTask = new SubTask("SubTask", "Описание сабтаски");
         final int subTaskId = manager.createNewSubTask(subTask, epic);
-        final int newEpicID = manager.createNewEpic(epic);
+
 
         List<Epic> allEpics = manager.getAllEpics();
         assertEquals(1, allEpics.size());
-        List<SubTask> allSubtasks = manager.getAllSubtasks();
+        List<SubTask> allSubtasks = manager.getAllSubTasks();
         assertEquals(1, allSubtasks.size());
 
         manager.deleteByIdEpic(newEpicID);
 
-        allSubtasks = manager.getAllSubtasks();
+        allSubtasks = manager.getAllSubTasks();
         assertEquals(0, allSubtasks.size());
         allEpics = manager.getAllEpics();
         assertEquals(0, allEpics.size());

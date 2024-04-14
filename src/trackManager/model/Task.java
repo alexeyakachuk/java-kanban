@@ -1,16 +1,37 @@
 package trackManager.model;
 
-import java.lang.reflect.Type;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
+
+import static trackManager.controllers.FileBackedTaskManager.parseDuration;
+import static trackManager.controllers.FileBackedTaskManager.parseTime;
+
 
 public class Task {
 
+    //переделать ptivit
     public Integer id;
     public String nameTask;
     public String descriptionTask;
     public Status statusTask;
 
     public TaskType taskType;
+    public LocalDateTime startTime;
+    public LocalDateTime endTime;
+    public Duration duration;
+
+
+    public Task(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
+        this.id = 0;
+        this.nameTask = nameTask;
+        this.descriptionTask = descriptionTask;
+        this.statusTask = Status.NEW;
+        this.taskType = TaskType.TASK;
+        this.startTime = startTime;
+        this.duration = duration;
+
+    }
 
     public Task(String nameTask, String descriptionTask) {
         this.id = 0;
@@ -18,6 +39,39 @@ public class Task {
         this.descriptionTask = descriptionTask;
         this.statusTask = Status.NEW;
         this.taskType = TaskType.TASK;
+        this.startTime = null;
+        this.duration = null;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if(getStartTime() == null) {
+            return null;
+        }
+        return startTime.plus(duration);
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public Integer getEpicId() {
+        return null;
     }
 
     public TaskType getTaskType() {
@@ -65,23 +119,30 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) && Objects.equals(descriptionTask, task.descriptionTask) && Objects.equals(statusTask, task.statusTask);
+        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) && Objects.equals(descriptionTask, task.descriptionTask) && statusTask == task.statusTask && taskType == task.taskType && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime) && Objects.equals(duration, task.duration);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nameTask, descriptionTask, statusTask);
+        return Objects.hash(id, nameTask, descriptionTask, statusTask, taskType, startTime, endTime, duration);
     }
-
-
 
     @Override
     public String toString() {
         return "trackManager.model.Task{" +
-                "id=" + id +
+                "id=" + id + '\'' +
+                ", type=" + taskType + '\'' +
                 ", nameTask='" + nameTask + '\'' +
                 ", descriptionTask='" + descriptionTask + '\'' +
                 ", statusTask='" + statusTask + '\'' +
+                // ", epicId=" + null + '\'' +
+                ", startTime=" + parseTime(startTime) + '\'' +
+                "duration=" + parseDuration(duration) + '\'' +
+                "endTime=" + endTime + '\'' +
                 '}';
     }
+
+
+
+
 }
