@@ -1,4 +1,4 @@
-package trackManager.handler;
+package trackManager.http.handler;
 
 public class PrioritizedHandler {
 }
