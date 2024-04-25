@@ -275,4 +275,15 @@ public class InMemoryTaskManager implements TaskManager {
                 .noneMatch(t -> isTimeOverlapping(task, t));
     }
 
+    public Map<Integer, Task> getTaskMap() {
+        return taskMap;
+    }
+
+    public Map<Integer, Epic> getEpicMap() {
+        return epicMap;
+    }
+
+    public Map<Integer, SubTask> getSubTaskMap() {
+        return subTaskMap;
+    }
 }
