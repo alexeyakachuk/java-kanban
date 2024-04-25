@@ -10,7 +10,7 @@ import static trackManager.controllers.FileBackedTaskManager.parseTime;
 
 public class Task {
 
-    //переделать ptivit
+
     public Integer id;
     public String nameTask;
     public String descriptionTask;
@@ -20,6 +20,7 @@ public class Task {
     public LocalDateTime startTime;
     public LocalDateTime endTime;
     public Duration duration;
+
 
 
     public Task(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
