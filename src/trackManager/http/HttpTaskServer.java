@@ -31,6 +31,7 @@ public class HttpTaskServer {
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.start();
         httpServer.createContext("/tasks", new TaskHandler(Managers.getDefault()));
+        httpServer.createContext("/epics", new EpicHandler(Managers.getDefault()));
 
     }
 

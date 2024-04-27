@@ -2,19 +2,15 @@ package trackManager.http.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import trackManager.controllers.InMemoryTaskManager;
 import trackManager.controllers.TaskManager;
-import trackManager.http.HttpTaskServer;
 import trackManager.model.Task;
 import trackManager.utils.Managers;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.http.HttpHeaders;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 
@@ -77,7 +73,7 @@ public class TaskHandler implements HttpHandler {
 
     }
 
-    private void getTasks(HttpExchange exchange) throws IOException {
+    public void getTasks(HttpExchange exchange) throws IOException {
 
 
         List<Task> tasks = manager.getAllTasks();
@@ -113,9 +109,8 @@ public class TaskHandler implements HttpHandler {
     private void createTask(HttpExchange exchange) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
         String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
-        Task task = Managers.getGson().fromJson(body, Task.class);
-
-
+        Task task = Managers.getGson()
+                .fromJson(body, Task.class);
 
         try {
             manager.createNewTask(task);
@@ -132,13 +127,13 @@ public class TaskHandler implements HttpHandler {
         Task task = Managers.getGson().fromJson(body, Task.class);
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);
-        Set<Integer> keyId = manager.getTaskMap().keySet();
-        for (Integer integer : keyId) {
-            if(integer.equals(id)) {
-               manager.updateTask(task);
-               exchange.sendResponseHeaders(200,0);
-               return;
-            }
+        task.setId(id);
+
+        try{
+            manager.updateTask(task);
+            exchange.sendResponseHeaders(200,0);
+        } catch (Exception e) {
+            exchange.sendResponseHeaders(406,0);
         }
     }
 
@@ -146,11 +141,8 @@ public class TaskHandler implements HttpHandler {
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);
         manager.deleteByIdTask(id);
-        try {
-            exchange.sendResponseHeaders(204,0);
-        } catch (Exception e) {
-            exchange.sendResponseHeaders(404,0);
-        }
+        exchange.sendResponseHeaders(204,0);
+
 
     }
 }
