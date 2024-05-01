@@ -4,6 +4,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import trackManager.controllers.TaskManager;
 import trackManager.model.Epic;
+import trackManager.model.SubTask;
 import trackManager.model.Task;
 import trackManager.utils.Managers;
 
@@ -14,11 +15,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class EpicHandler implements HttpHandler{
-    protected TaskManager manager;
+public class EpicHandler extends Handler implements HttpHandler {
+    //protected TaskManager manager;
+
 
     public EpicHandler(TaskManager manager) {
-        this.manager = manager;
+        super(manager);
 
     }
 
@@ -35,15 +37,21 @@ public class EpicHandler implements HttpHandler{
                     if (Pattern.matches("^/epics$/\\d+$", path)) {
                         getEpic(exchange);
                     }
+                    if (Pattern.matches("^/epics/\\d+/subTasks$", path))
+                        getSubTaskOfEpic(exchange);
                     break;
                 }
                 case "POST": {
-                    if (Pattern.matches("^/epics$", path)){
+                    if (Pattern.matches("^/epics$", path)) {
+                        createEpic(exchange);
 
                     }
                     break;
                 }
                 case "DELETE": {
+                    if (Pattern.matches("^/epics$/\\d+$", path)) {
+                        deleteEpic(exchange);
+                    }
 
                     break;
                 }
@@ -83,20 +91,52 @@ public class EpicHandler implements HttpHandler{
 
         exchange.getResponseHeaders()
                 .set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200,0);
+        exchange.sendResponseHeaders(200, 0);
 
         OutputStream outputStream = exchange.getResponseBody();
         outputStream.write(jsonResponse.getBytes());
         outputStream.close();
     }
 
+    // TODO дописать если нет эпика
+    private void getSubTaskOfEpic(HttpExchange exchange) throws IOException {
+        String[] split = exchange.getRequestURI().getPath().split("/");
+        int id = Integer.parseInt(split[2]);
+        Epic epic = manager.getEpicById(id);
+        List<SubTask> epicAllSubtask = manager.getEpicAllSubtask(epic);
+
+
+        String jsonResponse = Managers.getGson().toJson(epicAllSubtask);
+        exchange.getResponseHeaders()
+                .set("Content-Type", "application/json");
+        exchange.sendResponseHeaders(200, 0);
+
+        OutputStream outputStream = exchange.getResponseBody();
+        outputStream.write(jsonResponse.getBytes());
+        outputStream.close();
+    }
+
+
     private void createEpic(HttpExchange exchange) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
         String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
         Epic epic = Managers.getGson()
                 .fromJson(body, Epic.class);
+        try {
+            manager.createNewEpic(epic);
+//            System.out.println(epic);
+//            System.out.println(manager.getAllEpics());
+            exchange.sendResponseHeaders(201, 0);
+        } catch (Exception e) {
+            exchange.sendResponseHeaders(406, 0);
+        }
     }
 
+    private void deleteEpic(HttpExchange exchange) throws IOException {
+        String[] split = exchange.getRequestURI().getPath().split("/");
+        int id = Integer.parseInt(split[2]);
+        manager.deleteByIdEpic(id);
+        exchange.sendResponseHeaders(204, 0);
 
-
+    }
 }

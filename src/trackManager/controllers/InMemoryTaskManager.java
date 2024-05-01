@@ -25,6 +25,8 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager;
 
 
+
+
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
@@ -130,7 +132,6 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int createNewEpic(Epic epic) {
-        addToPrioritizedTasks(epic);
         final int id = createNewId();
         epic.setId(id);
         epicMap.put(id, epic);

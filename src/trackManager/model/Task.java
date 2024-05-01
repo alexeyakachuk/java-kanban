@@ -21,7 +21,10 @@ public class Task {
     public LocalDateTime endTime;
     public Duration duration;
 
-
+    public Task() {
+        this.statusTask = Status.NEW;
+        this.taskType = TaskType.TASK;
+    }
 
     public Task(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         this.id = 0;

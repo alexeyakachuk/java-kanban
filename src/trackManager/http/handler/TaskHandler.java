@@ -14,12 +14,13 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 
-public class TaskHandler implements HttpHandler {
-    protected TaskManager manager;
+public class TaskHandler extends Handler implements HttpHandler {
+   // protected TaskManager manager;
 
 
     public TaskHandler(TaskManager manager) {
-        this.manager = manager;
+
+        super(manager);
     }
 
     @Override

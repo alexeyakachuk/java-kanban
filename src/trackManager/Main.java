@@ -20,11 +20,11 @@ public class Main {
     public static void main(String[] args) {
 
         //TaskManager manager = Managers.getDefault();
-       // FileBackedTaskManager manager = FileBackedTaskManager.loadFormFile(new File("resources/Имя.csv"));
+        FileBackedTaskManager manager = FileBackedTaskManager.loadFormFile(new File("resources/Имя.csv"));
 // конструктор с 4 параметрами
-        Task task = new Task("task", "описание",
-                LocalDateTime.of(2024, 1, 1, 11, 10, 0),
-                Duration.ofMinutes(10));
+//        Task task = new Task("task", "описание",
+//                LocalDateTime.of(2024, 1, 1, 11, 10, 0),
+//                Duration.ofMinutes(10));
         Epic epic = new Epic("epic", "писание");
         SubTask subTask = new SubTask("subTask", "описание",
                 LocalDateTime.of(2024, 1, 1, 9, 10, 0),
@@ -33,14 +33,17 @@ public class Main {
                 LocalDateTime.of(2024, 1, 1, 10, 10, 0),
                 Duration.ofMinutes(20));
 //        int newIdTask = manager.createNewTask(task);
-//        int newIdEpic = manager.createNewEpic(epic);
-//        int newIdSubTask = manager.createNewSubTask(subTask, epic);
-//        int newIdSubTask1 = manager.createNewSubTask(subTask1, epic);
+        int newIdEpic = manager.createNewEpic(epic);
+        int newIdSubTask = manager.createNewSubTask(subTask, epic);
+        int newIdSubTask1 = manager.createNewSubTask(subTask1, epic);
 //        manager.getSubTaskById(newIdSubTask);
 //        manager.getSubTaskById(newIdSubTask1);
 //        System.out.println(manager.getHistory());
 
-        System.out.println(Managers.getGson().toJson(task));
+        System.out.println(Managers.getGson().toJson(epic));
+        System.out.println(Managers.getGson().toJson(subTask));
+        System.out.println(Managers.getGson().toJson(subTask1));
+
 
 
 //

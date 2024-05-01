@@ -30,10 +30,12 @@ public class HttpTaskServer {
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.start();
-        httpServer.createContext("/tasks", new TaskHandler(Managers.getDefault()));
-        httpServer.createContext("/epics", new EpicHandler(Managers.getDefault()));
+
+        TaskManager manager = Managers.getDefault();
+
+        httpServer.createContext("/tasks", new TaskHandler(manager));
+        httpServer.createContext("/epics", new EpicHandler(manager));
+        httpServer.createContext("/subTasks", new SubTaskHandler(manager));
 
     }
-
-
 }
