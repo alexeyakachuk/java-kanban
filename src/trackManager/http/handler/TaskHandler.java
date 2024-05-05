@@ -96,8 +96,6 @@ public class TaskHandler extends Handler implements HttpHandler {
         Task task = manager.getTaskById(id);
 
         String jsonResponse = Managers.getGson().toJson(task);
-
-
         exchange.getResponseHeaders()
                 .set("Content-Type", "application/json");
         exchange.sendResponseHeaders(200, 0);

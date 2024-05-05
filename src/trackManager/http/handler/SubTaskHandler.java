@@ -44,11 +44,16 @@ public class SubTaskHandler extends Handler implements HttpHandler {
                     if (Pattern.matches("^/subTasks$", path)) {
                         createSubTask(exchange);
                     }
+                    if (Pattern.matches("^/subTasks/\\d+$", path)) {
+                        updateSubTask(exchange);
+                    }
 
                     break;
                 }
                 case "DELETE": {
-
+                    if (Pattern.matches("^/subTasks/\\d+$", path)) {
+                        deleteSubTask(exchange);
+                    }
                     break;
                 }
                 default: {
@@ -97,7 +102,7 @@ public class SubTaskHandler extends Handler implements HttpHandler {
         String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
         SubTask subTask = Managers.getGson()
                 .fromJson(body, SubTask.class);
-//Epic epic = Managers.getGson().fromJson(body, Epic.class);
+
 
         try {
             Integer id = subTask.getEpicId();
@@ -109,6 +114,29 @@ public class SubTaskHandler extends Handler implements HttpHandler {
             exchange.sendResponseHeaders(406, 0);
         }
 
+    }
+
+    private void updateSubTask(HttpExchange exchange) throws IOException {
+        InputStream requestBody = exchange.getRequestBody();
+        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+        SubTask subTask = Managers.getGson()
+                .fromJson(body, SubTask.class);
+        String[] split = exchange.getRequestURI().getPath().split("/");
+        int id = Integer.parseInt(split[2]);
+        subTask.setId(id);
+        try {
+            manager.updateSubTask(subTask);
+            exchange.sendResponseHeaders(201,0);
+        } catch (Exception e) {
+            exchange.sendResponseHeaders(406,0);
+        }
+    }
+
+    private void deleteSubTask(HttpExchange exchange) throws IOException {
+        String[] split = exchange.getRequestURI().getPath().split("/");
+        int id = Integer.parseInt(split[2]);
+        manager.deleteByIdSubTask(id);
+        exchange.sendResponseHeaders(204,0);
     }
 
 }

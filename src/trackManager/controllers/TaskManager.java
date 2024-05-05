@@ -70,12 +70,14 @@ public interface TaskManager {
 
     HistoryManager getHistoryManager();
 
+    List<Task> getPrioritizedTasks();
+
 
     boolean isTimeOverlapping(Task first, Task second);
 
-    public Map<Integer, Task> getTaskMap();
+    Map<Integer, Task> getTaskMap();
 
-    public Map<Integer, Epic> getEpicMap();
+    Map<Integer, Epic> getEpicMap();
 
-    public Map<Integer, SubTask> getSubTaskMap();
+    Map<Integer, SubTask> getSubTaskMap();
 }

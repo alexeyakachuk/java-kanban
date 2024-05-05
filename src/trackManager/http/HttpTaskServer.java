@@ -5,9 +5,7 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import trackManager.controllers.InMemoryTaskManager;
 import trackManager.controllers.TaskManager;
-import trackManager.http.handler.EpicHandler;
-import trackManager.http.handler.SubTaskHandler;
-import trackManager.http.handler.TaskHandler;
+import trackManager.http.handler.*;
 import trackManager.utils.Managers;
 
 import java.io.IOException;
@@ -36,6 +34,8 @@ public class HttpTaskServer {
         httpServer.createContext("/tasks", new TaskHandler(manager));
         httpServer.createContext("/epics", new EpicHandler(manager));
         httpServer.createContext("/subTasks", new SubTaskHandler(manager));
+        httpServer.createContext("/history", new HistoryHandler(manager));
+        httpServer.createContext("/prioritized", new PrioritizedHandler(manager));
 
     }
 }

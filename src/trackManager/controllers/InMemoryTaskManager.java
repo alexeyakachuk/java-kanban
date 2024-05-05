@@ -25,8 +25,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final HistoryManager historyManager;
 
 
-
-
     public InMemoryTaskManager(HistoryManager historyManager) {
         this.historyManager = historyManager;
     }
@@ -129,7 +127,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-
     @Override
     public int createNewEpic(Epic epic) {
         final int id = createNewId();
@@ -180,10 +177,26 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateSubTask(SubTask subTask) {
-        subTaskMap.put(subTask.id, subTask);
-        addToPrioritizedTasks(subTask);
+        SubTask subTaskOld = subTaskMap.get(subTask.getId());
+        SubTask updatedSubTask = mergeSubTask(subTaskOld, subTask);
+        subTaskMap.put(updatedSubTask.id, updatedSubTask);
+//        Integer id = subTask.getEpicId();
+//        Epic epic = getEpicById(id);
+//        epic.setStartTime();
+//        epic.setDuration();
+//        updateEpic(epic);
+        addToPrioritizedTasks(updatedSubTask);
+    }
 
+    private SubTask mergeSubTask(SubTask subTaskOld, SubTask subTask) {
+        if (subTask.getStartTime() != null) {
+            subTaskOld.setStartTime(subTask.getStartTime());
+        }
+        if (subTask.getDuration() != null) {
+            subTaskOld.setDuration(subTask.getDuration());
+        }
 
+        return subTaskOld;
     }
 
     //Удаление по индефикатору
@@ -255,8 +268,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     // Проверка на пересечение времени задач
     public boolean isTimeOverlapping(Task first, Task second) {
-        if(first.getStartTime() == null || first.getEndTime() == null ||
-                second.getStartTime() == null || second.getEndTime() == null){
+        if (first.getStartTime() == null || first.getEndTime() == null ||
+                second.getStartTime() == null || second.getEndTime() == null) {
             return false;
         }
 

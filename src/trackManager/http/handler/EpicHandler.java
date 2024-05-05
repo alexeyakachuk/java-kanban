@@ -31,14 +31,15 @@ public class EpicHandler extends Handler implements HttpHandler {
             String path = exchange.getRequestURI().getPath();
             switch (requestMethod) {
                 case "GET": {
+                    if (Pattern.matches("^/epics/\\d+$", path)) {
+                        getEpic(exchange);
+                    }
                     if (Pattern.matches("^/epics$", path)) {
                         getEpics(exchange);
                     }
-                    if (Pattern.matches("^/epics$/\\d+$", path)) {
-                        getEpic(exchange);
-                    }
-                    if (Pattern.matches("^/epics/\\d+/subTasks$", path))
-                        getSubTaskOfEpic(exchange);
+
+                    if (Pattern.matches("^/epics/\\d+/subTasks$", path)){
+                        getSubTaskOfEpic(exchange);}
                     break;
                 }
                 case "POST": {
@@ -87,8 +88,8 @@ public class EpicHandler extends Handler implements HttpHandler {
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);
         Epic epic = manager.getEpicById(id);
-        String jsonResponse = Managers.getGson().toJson(epic);
 
+        String jsonResponse = Managers.getGson().toJson(epic);
         exchange.getResponseHeaders()
                 .set("Content-Type", "application/json");
         exchange.sendResponseHeaders(200, 0);
@@ -124,8 +125,6 @@ public class EpicHandler extends Handler implements HttpHandler {
                 .fromJson(body, Epic.class);
         try {
             manager.createNewEpic(epic);
-//            System.out.println(epic);
-//            System.out.println(manager.getAllEpics());
             exchange.sendResponseHeaders(201, 0);
         } catch (Exception e) {
             exchange.sendResponseHeaders(406, 0);

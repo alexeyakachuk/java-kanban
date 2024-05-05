@@ -11,8 +11,9 @@ public class Epic extends Task {
     private List<SubTask> subTasks = new ArrayList<>();
 
     public Epic() {
-        subTasks = new ArrayList<>();
+        //subTasks = new ArrayList<>();
         this.taskType = TaskType.EPIC;
+
     }
 
     public Epic(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
