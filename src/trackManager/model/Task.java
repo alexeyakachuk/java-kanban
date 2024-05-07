@@ -10,12 +10,10 @@ import static trackManager.controllers.FileBackedTaskManager.parseTime;
 
 public class Task {
 
-
     public Integer id;
     public String nameTask;
     public String descriptionTask;
     public Status statusTask;
-
     public TaskType taskType;
     public LocalDateTime startTime;
     public LocalDateTime endTime;
@@ -25,7 +23,6 @@ public class Task {
         this.statusTask = Status.NEW;
         this.taskType = TaskType.TASK;
     }
-
     public Task(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         this.id = 0;
         this.nameTask = nameTask;
@@ -34,9 +31,7 @@ public class Task {
         this.taskType = TaskType.TASK;
         this.startTime = startTime;
         this.duration = duration;
-
     }
-
     public Task(String nameTask, String descriptionTask) {
         this.id = 0;
         this.nameTask = nameTask;
@@ -123,7 +118,10 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask) && Objects.equals(descriptionTask, task.descriptionTask) && statusTask == task.statusTask && taskType == task.taskType && Objects.equals(startTime, task.startTime) && Objects.equals(endTime, task.endTime) && Objects.equals(duration, task.duration);
+        return Objects.equals(id, task.id) && Objects.equals(nameTask, task.nameTask)
+                && Objects.equals(descriptionTask, task.descriptionTask)
+                && statusTask == task.statusTask && taskType == task.taskType && Objects.equals(startTime, task.startTime)
+                && Objects.equals(endTime, task.endTime) && Objects.equals(duration, task.duration);
     }
 
     @Override
@@ -139,14 +137,9 @@ public class Task {
                 ", nameTask='" + nameTask + '\'' +
                 ", descriptionTask='" + descriptionTask + '\'' +
                 ", statusTask='" + statusTask + '\'' +
-                // ", epicId=" + null + '\'' +
                 ", startTime=" + parseTime(startTime) + '\'' +
                 "duration=" + parseDuration(duration) + '\'' +
                 "endTime=" + endTime + '\'' +
                 '}';
     }
-
-
-
-
 }

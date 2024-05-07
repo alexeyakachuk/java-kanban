@@ -9,35 +9,27 @@ import static trackManager.controllers.FileBackedTaskManager.parseTime;
 
 
 public class SubTask extends Task {
-
-
     private Integer epicId;
-
     public SubTask() {
         this.taskType = TaskType.SUBTASK;
 
     }
-
     public SubTask(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         super(nameTask, descriptionTask, startTime, duration);
         this.taskType = TaskType.SUBTASK;
     }
-
     public SubTask(String nameTask, String descriptionTask) {
         super(nameTask, descriptionTask);
         this.taskType = TaskType.SUBTASK;
     }
-
     @Override
     public Integer getEpicId() {
         return epicId;
 
     }
-
     public void setEpicId(Integer epicId) {
         this.epicId = epicId;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -46,12 +38,10 @@ public class SubTask extends Task {
         SubTask subTask = (SubTask) o;
         return Objects.equals(epicId, subTask.epicId);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), epicId);
     }
-
     @Override
     public String toString() {
         return "SubTask{" +

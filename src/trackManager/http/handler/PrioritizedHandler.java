@@ -15,7 +15,6 @@ public class PrioritizedHandler extends Handler implements HttpHandler {
     public PrioritizedHandler(TaskManager manager) {
         super(manager);
     }
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
@@ -24,7 +23,6 @@ public class PrioritizedHandler extends Handler implements HttpHandler {
             exchange.close();
             return;
         }
-
         try {
             List<Task> prioritizedTasks = manager.getPrioritizedTasks();
             String jsonResponse = Managers.getGson().toJson(prioritizedTasks);
@@ -35,8 +33,6 @@ public class PrioritizedHandler extends Handler implements HttpHandler {
             OutputStream outputStream = exchange.getResponseBody();
             outputStream.write(jsonResponse.getBytes());
             outputStream.close();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

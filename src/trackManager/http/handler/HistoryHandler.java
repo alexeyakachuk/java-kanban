@@ -16,7 +16,6 @@ public class HistoryHandler extends Handler implements HttpHandler {
     public HistoryHandler(TaskManager manager) {
         super(manager);
     }
-
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String requestMethod = exchange.getRequestMethod();
@@ -25,7 +24,6 @@ public class HistoryHandler extends Handler implements HttpHandler {
             exchange.close();
             return;
         }
-
         try {
             List<Task> history = manager.getHistory();
             String jsonResponse = Managers.getGson().toJson(history);
@@ -36,8 +34,6 @@ public class HistoryHandler extends Handler implements HttpHandler {
             OutputStream outputStream = exchange.getResponseBody();
             outputStream.write(jsonResponse.getBytes());
             outputStream.close();
-
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

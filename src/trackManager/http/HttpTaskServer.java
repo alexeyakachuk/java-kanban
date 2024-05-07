@@ -14,17 +14,7 @@ import java.net.InetSocketAddress;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class HttpTaskServer {
-
     public static final int PORT = 8080;
-
-    private HttpServer server;
-    protected Gson gson;
-    protected TaskManager taskManager;
-
-
-
-
-
     public static void main(String[] args) throws IOException {
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.start();
