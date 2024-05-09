@@ -28,6 +28,7 @@ public class TaskHandler extends Handler implements HttpHandler {
                     if (Pattern.matches("^/tasks/\\d+$", path)) {
                         getTask(exchange);
                     }
+
                     if (Pattern.matches("^/tasks$", path)) {
                         getTasks(exchange);
                     }
@@ -37,6 +38,7 @@ public class TaskHandler extends Handler implements HttpHandler {
                     if (Pattern.matches("^/tasks/\\d+$", path)) {
                         updateTask(exchange);
                     }
+
                     if (Pattern.matches("^/tasks$", path)){
                         createTask(exchange);
                     }
@@ -60,7 +62,7 @@ public class TaskHandler extends Handler implements HttpHandler {
         }
 
     }
-    public void getTasks(HttpExchange exchange) throws IOException {
+    private void getTasks(HttpExchange exchange) throws IOException {
         List<Task> tasks = manager.getAllTasks();
         String jsonResponse = Managers.getGson().toJson(tasks);
 
