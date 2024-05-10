@@ -9,6 +9,7 @@ import trackManager.controllers.TaskManager;
 import trackManager.model.Epic;
 import trackManager.model.Status;
 import trackManager.model.SubTask;
+
 import trackManager.utils.Managers;
 import java.io.IOException;
 import java.net.URI;
@@ -93,7 +94,6 @@ public class EpicHandlerTest {
         assertEquals(200, response.statusCode());
         assertEquals(epic.getNameTask(), epic1.getNameTask());
         assertEquals(epic.getDescriptionTask(), epic1.getDescriptionTask());
-
     }
 
     @Test
@@ -141,6 +141,28 @@ public class EpicHandlerTest {
         assertNotNull(epic1);
         assertEquals(200, response.statusCode());
         assertEquals(Status.DONE, epic1.getStatusTask());
+    }
+
+    @Test
+    void updateEpicTest() throws IOException, InterruptedException {
+        Epic epic = new Epic("epic", "описание");
+        int id = manager.createNewEpic(epic);
+        epic.setNameTask("epic1");
+        epic.setDescriptionTask("описание1");
+        manager.updateEpic(epic);
+        String jsonNewEpic = gson.toJson(epic);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/epics/" + id))
+                .POST(HttpRequest.BodyPublishers.ofString(jsonNewEpic))
+                .header("Content-Type", "application/json")
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Epic epic1 = manager.getEpicById(id);
+
+        assertNotNull(response);
+        assertEquals(200, response.statusCode());
+        assertEquals("epic1", epic1.getNameTask());
+        assertEquals("описание1", epic1.getDescriptionTask());
     }
 
     @Test
