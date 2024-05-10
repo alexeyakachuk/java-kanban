@@ -44,7 +44,7 @@ public class EpicHandler extends Handler implements HttpHandler {
                     break;
                 }
                 case "DELETE": {
-                    if (Pattern.matches("^/epics$/\\d+$", path)) {
+                    if (Pattern.matches("^/epics/\\d+$", path)) {
                         deleteEpic(exchange);
                     }
                     break;
