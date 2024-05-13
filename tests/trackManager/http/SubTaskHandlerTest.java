@@ -53,11 +53,13 @@ public class SubTaskHandlerTest {
         subTask.setEpicId(epicId);
         String jsonRequest = gson.toJson(subTask);
         URI uri = URI.create("http://localhost:8080/subTasks");
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                 .header("Content-Type", "application/json")
                 .build();
+
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, response.statusCode());
     }
@@ -67,14 +69,16 @@ public class SubTaskHandlerTest {
         Epic epic = new Epic("epic", "описание");
         SubTask subTask = new SubTask("subTask", "описание",
                 LocalDateTime.now(), Duration.ofMinutes(10));
-        int epicId = manager.createNewEpic(epic);
-        int subTaskId = manager.createNewSubTask(subTask, epic);
+        manager.createNewEpic(epic);
+        manager.createNewSubTask(subTask, epic);
         URI uri = URI.create("http://localhost:8080/subTasks");
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
                 .header("Content-Type", "application/json")
                 .build();
+
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         List<SubTask> subTasks = gson.fromJson(response.body(), new TypeToken<List<SubTask>>() {
         }.getType());
@@ -89,14 +93,16 @@ public class SubTaskHandlerTest {
         Epic epic = new Epic("epic", "описание");
         SubTask subTask = new SubTask("subTask", "описание",
                 LocalDateTime.now(), Duration.ofMinutes(10));
-        int epicId = manager.createNewEpic(epic);
+        manager.createNewEpic(epic);
         int subTaskId = manager.createNewSubTask(subTask, epic);
         URI uri = URI.create("http://localhost:8080/subTasks/" + subTaskId);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
                 .header("Content-Type", "application/json")
                 .build();
+
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         SubTask subTask1 = gson.fromJson(response.body(), SubTask.class);
 
@@ -111,17 +117,18 @@ public class SubTaskHandlerTest {
         Epic epic = new Epic("epic", "описание");
         SubTask subTask = new SubTask("subTask", "описание",
                 LocalDateTime.now(), Duration.ofMinutes(10));
-        int epicId = manager.createNewEpic(epic);
+        manager.createNewEpic(epic);
         int subTaskId = manager.createNewSubTask(subTask, epic);
         subTask.setNameTask("subTask1");
         subTask.setDescriptionTask("описание1");
-        manager.updateSubTask(subTask);
+
         String jsonNewSubTask = gson.toJson(subTask);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/subTasks/" + subTaskId))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonNewSubTask))
                 .header("Content-Type", "application/json")
                 .build();
+
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         SubTask subTask1 = manager.getSubTaskById(subTaskId);
 

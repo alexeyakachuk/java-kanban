@@ -39,8 +39,8 @@ public class PrioritizedHandlerTest {
     @Test
     void getPrioritizedTasksTest() throws IOException, InterruptedException {
 
-        Task task1 = new Task("task1", "описание", LocalDateTime.now(), Duration.ofMinutes(10));
-        Task task2 = new Task("task2", "описание", LocalDateTime.now().plusHours(1), Duration.ofMinutes(20));
+        Task task1 = new Task("task1", "описание", LocalDateTime.now().plusHours(1), Duration.ofMinutes(20));
+        Task task2 = new Task("task2", "описание", LocalDateTime.now(), Duration.ofMinutes(10));
         manager.createNewTask(task1);
         manager.createNewTask(task2);
 
@@ -57,7 +57,7 @@ public class PrioritizedHandlerTest {
         assertNotNull(prioritizedTasks);
         assertEquals(200, response.statusCode());
         assertEquals(2, prioritizedTasks.size());
-        assertEquals(task1.getNameTask(), prioritizedTasks.get(0).getNameTask());
-        assertEquals(task2.getNameTask(), prioritizedTasks.get(1).getNameTask());
+        assertEquals(task1.getNameTask(), prioritizedTasks.get(1).getNameTask());
+        assertEquals(task2.getNameTask(), prioritizedTasks.get(0).getNameTask());
     }
 }

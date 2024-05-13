@@ -22,15 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class HistoryHandlerTest {
     private HttpTaskServer server;
-
     private final Gson gson = Managers.getGson();
-
     private final TaskManager manager = Managers.getDefault();
     private HttpClient client;
 
     @BeforeEach
     void init() throws IOException {
-
         server = new HttpTaskServer(manager);
         client = HttpClient.newHttpClient();
         server.start();
@@ -38,30 +35,25 @@ public class HistoryHandlerTest {
 
     @Test
     void getHistoryTest() throws IOException, InterruptedException {
-        // Create and add tasks to generate history
-        Task task1 = new Task("task1", "description1", LocalDateTime.now(), Duration.ofMinutes(10));
-        Task task2 = new Task("task2", "description2", LocalDateTime.now().plusHours(1), Duration.ofMinutes(20));
+        Task task1 = new Task("task1", "описание", LocalDateTime.now(), Duration.ofMinutes(10));
+        Task task2 = new Task("task2", "описание", LocalDateTime.now().plusHours(1), Duration.ofMinutes(20));
         manager.createNewTask(task1);
         manager.createNewTask(task2);
 
-        // Access the tasks to generate history
         manager.getTaskById(task1.getId());
         manager.getTaskById(task2.getId());
 
-        // Create the HTTP request for getting the history
+        URI uri = URI.create("http://localhost:8080/history");
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/history"))
+                .uri(uri)
                 .GET()
                 .header("Content-Type", "application/json")
                 .build();
 
-        // Send the request and get the response
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-        // Deserialize the response body to a list of tasks
         List<Task> history = gson.fromJson(response.body(), new TypeToken<List<Task>>() {}.getType());
 
-        // Assertions
         assertNotNull(history);
         assertEquals(200, response.statusCode());
         assertEquals(2, history.size());

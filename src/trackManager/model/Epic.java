@@ -7,28 +7,32 @@ import java.util.List;
 import java.time.Duration;
 
 public class Epic extends Task {
-    private List<SubTask> subTasks = new ArrayList<>();
+    private final List<SubTask> subTasks = new ArrayList<>();
     public Epic() {
-        //subTasks = new ArrayList<>();
         this.taskType = TaskType.EPIC;
         this.statusTask = getStatusTask();
     }
+
     public Epic(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         super(nameTask, descriptionTask, startTime, duration);
         this.taskType = TaskType.EPIC;
         this.statusTask = getStatusTask();
     }
+
     public Epic(String nameTask, String descriptionTask) {
         super(nameTask, descriptionTask);
         this.taskType = TaskType.EPIC;
         this.statusTask = getStatusTask();
     }
+
     public List<SubTask> getSubTasks() {
         return subTasks;
     }
+
     public void addSubTask(SubTask subTask) {
         subTasks.add(subTask);
     }
+
     public void deleteSubTask(SubTask subTask) {
         subTasks.remove(subTask);
     }
@@ -59,6 +63,7 @@ public class Epic extends Task {
             return Status.IN_PROGRESS;
         }
     }
+
     @Override
     public LocalDateTime getEndTime() {
         LocalDateTime max = LocalDateTime.MIN;
@@ -72,11 +77,12 @@ public class Epic extends Task {
             return null;
         }
         return max;
-
     }
+
     public void setStartTime() {
         super.setStartTime(getStartTime());
     }
+
     public void setDuration() {
         super.setDuration(getDuration());
     }
@@ -98,6 +104,7 @@ public class Epic extends Task {
         }
         return min;
     }
+
     @Override
     public Duration getDuration() {
         Duration totalDuration = Duration.ofMinutes(0);

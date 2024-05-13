@@ -92,8 +92,6 @@ public class TaskHandler extends Handler implements HttpHandler {
         } catch (Exception e) {
             exchange.sendResponseHeaders(404,0);
         }
-
-
     }
 
     private void createTask(HttpExchange exchange) throws IOException {
@@ -101,6 +99,7 @@ public class TaskHandler extends Handler implements HttpHandler {
         String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
         Task task = Managers.getGson()
                 .fromJson(body, Task.class);
+
         try {
             manager.createNewTask(task);
             exchange.sendResponseHeaders(201, 0);
@@ -109,6 +108,7 @@ public class TaskHandler extends Handler implements HttpHandler {
         }
 
     }
+
     private void updateTask(HttpExchange exchange) throws IOException {
         InputStream requestBody = exchange.getRequestBody();
         String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
@@ -124,6 +124,7 @@ public class TaskHandler extends Handler implements HttpHandler {
             exchange.sendResponseHeaders(406,0);
         }
     }
+
     private void deleteTask(HttpExchange exchange) throws IOException {
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);

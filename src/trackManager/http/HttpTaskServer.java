@@ -13,8 +13,6 @@ public class HttpTaskServer {
     public static final int PORT = 8080;
     private final HttpServer httpServer;
 
-
-
     public HttpTaskServer(TaskManager manager) throws IOException {
         httpServer = HttpServer.create(new InetSocketAddress("localhost", PORT), 0);
         httpServer.createContext("/tasks", new TaskHandler(manager));
@@ -23,6 +21,7 @@ public class HttpTaskServer {
         httpServer.createContext("/history", new HistoryHandler(manager));
         httpServer.createContext("/prioritized", new PrioritizedHandler(manager));
     }
+
     public void start() {
         System.out.println("Старт сервера на порту " + PORT);
         httpServer.start();
@@ -32,7 +31,6 @@ public class HttpTaskServer {
         System.out.println("Остановка сервера на порту " + PORT);
         httpServer.stop(0);
     }
-
 
     public static void main(String[] args) throws IOException {
         HttpTaskServer server = new HttpTaskServer(Managers.getDefault());

@@ -23,6 +23,7 @@ public class Task {
         this.statusTask = Status.NEW;
         this.taskType = TaskType.TASK;
     }
+
     public Task(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         this.id = 0;
         this.nameTask = nameTask;
@@ -32,6 +33,7 @@ public class Task {
         this.startTime = startTime;
         this.duration = duration;
     }
+
     public Task(String nameTask, String descriptionTask) {
         this.id = 0;
         this.nameTask = nameTask;

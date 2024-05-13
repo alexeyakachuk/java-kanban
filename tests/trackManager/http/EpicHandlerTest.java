@@ -32,7 +32,6 @@ public class EpicHandlerTest {
 
     @BeforeEach
     void init() throws IOException {
-
         server = new HttpTaskServer(manager);
         client = HttpClient.newHttpClient();
         server.start();
@@ -45,7 +44,6 @@ public class EpicHandlerTest {
 
     @Test
     void createEpicTest() throws IOException, InterruptedException {
-
         Epic epic = new Epic("epic", "описание", LocalDateTime.now(), Duration.ofMinutes(10));
         String jsonNewTask = gson.toJson(epic);
         URI uri = URI.create("http://localhost:8080/epics");
@@ -102,13 +100,15 @@ public class EpicHandlerTest {
         SubTask subTask = new SubTask("subTask", "описание",
                 LocalDateTime.now(), Duration.ofMinutes(10));
         int epicId = manager.createNewEpic(epic);
-        int subTaskId = manager.createNewSubTask(subTask, epic);
+        manager.createNewSubTask(subTask, epic);
+
         URI uri = URI.create("http://localhost:8080/epics/" + epicId + "/subTasks");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
                 .GET()
                 .header("Content-Type", "application/json")
                 .build();
+
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         List<SubTask> subTasks = gson.fromJson(response.body(), new TypeToken<List<SubTask>>() {
         }.getType());
@@ -126,20 +126,21 @@ public class EpicHandlerTest {
                 LocalDateTime.now(), Duration.ofMinutes(10));
         int epicId = manager.createNewEpic(epic);
         int subTaskId = manager.createNewSubTask(subTask, epic);
+
         subTask.setStatusTask(Status.DONE);
-        manager.updateSubTask(subTask);
-        String jsonNewEpic = gson.toJson(epic);
-        URI uri = URI.create("http://localhost:8080/epics/" + epicId);
+        String jsonNewSubTask = gson.toJson(subTask);
+
+        URI uri = URI.create("http://localhost:8080/subTasks/" + subTaskId);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri)
-                .GET()
+                .POST(HttpRequest.BodyPublishers.ofString(jsonNewSubTask))
                 .header("Content-Type", "application/json")
                 .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Epic epic1 = gson.fromJson(response.body(), Epic.class);
 
-        assertNotNull(epic1);
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
         assertEquals(200, response.statusCode());
+        Epic epic1 = manager.getEpicById(epicId);
         assertEquals(Status.DONE, epic1.getStatusTask());
     }
 
@@ -149,8 +150,8 @@ public class EpicHandlerTest {
         int id = manager.createNewEpic(epic);
         epic.setNameTask("epic1");
         epic.setDescriptionTask("описание1");
-        manager.updateEpic(epic);
         String jsonNewEpic = gson.toJson(epic);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/epics/" + id))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonNewEpic))

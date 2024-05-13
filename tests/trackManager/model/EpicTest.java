@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 class EpicTest {
-
     TaskManager manager = Managers.getDefault();
 
     @Test
@@ -22,7 +21,6 @@ class EpicTest {
 
         assertEquals(status, Status.NEW);
     }
-
 
     @Test
     void getStatusNewTest() {
@@ -37,7 +35,6 @@ class EpicTest {
 
         assertEquals(status, Status.NEW);
     }
-
     @Test
     void getStatusDoneTest() {
         Epic epic = new Epic("Epic", "Описание epic");
@@ -55,7 +52,6 @@ class EpicTest {
 
         assertEquals(status, Status.DONE);
     }
-
     @Test
     void getStatusInProgressTest() {
         Epic epic = new Epic("Epic", "Описание epic");
