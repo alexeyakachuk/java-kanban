@@ -35,19 +35,5 @@ public class HttpTaskServer {
     public static void main(String[] args) throws IOException {
         HttpTaskServer server = new HttpTaskServer(Managers.getDefault());
         server.start();
-        //server.stop();
-
-//        HttpServer httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
-//        TaskManager manager = Managers.getDefault();
-//
-//        httpServer.createContext("/tasks", new TaskHandler(manager));
-//        httpServer.createContext("/epics", new EpicHandler(manager));
-//        httpServer.createContext("/subTasks", new SubTaskHandler(manager));
-//        httpServer.createContext("/history", new HistoryHandler(manager));
-//        httpServer.createContext("/prioritized", new PrioritizedHandler(manager));
-//
-//
-//        httpServer.start();
-//        httpServer.stop(0);
     }
 }
