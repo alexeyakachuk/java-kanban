@@ -3,13 +3,12 @@ package trackManager.http.handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import trackManager.controllers.TaskManager;
+import trackManager.exception.NotFoundException;
+import trackManager.exception.UrlException;
 import trackManager.model.Task;
 import trackManager.utils.Managers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -18,11 +17,21 @@ public class TaskHandler extends Handler implements HttpHandler {
     public TaskHandler(TaskManager manager) {
         super(manager);
     }
+
+
+
     @Override
-    public void handle(HttpExchange exchange) {
+    public void handle(HttpExchange exchange)  {
         try {
             String requestMethod = exchange.getRequestMethod();
             String path = exchange.getRequestURI().getPath();
+
+            if (!isValidPath(path)) {
+                System.out.println("Неправильный запрос: " + path);
+                exchange.sendResponseHeaders(404, 0); // Отправляем код ошибки 404
+                return;
+            }
+
             switch (requestMethod) {
                 case "GET": {
                     if (Pattern.matches("^/tasks/\\d+$", path)) {
@@ -39,7 +48,7 @@ public class TaskHandler extends Handler implements HttpHandler {
                         updateTask(exchange);
                     }
 
-                    if (Pattern.matches("^/tasks$", path)){
+                    if (Pattern.matches("^/tasks$", path)) {
                         createTask(exchange);
                     }
                     break;
@@ -55,48 +64,46 @@ public class TaskHandler extends Handler implements HttpHandler {
                     System.out.println("Не правильный запрос");
                     exchange.sendResponseHeaders(405, 0);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
+        } catch (IOException e) {
+            throw new UrlException(e.getMessage());
+        }
+        finally {
             exchange.close();
         }
-
     }
+
+    private boolean isValidPath(String path) {
+        return Pattern.matches("^/tasks(/\\d+)?$", path);
+    }
+
     private void getTasks(HttpExchange exchange) throws IOException {
         List<Task> tasks = manager.getAllTasks();
         String jsonResponse = Managers.getGson().toJson(tasks);
 
-        exchange.getResponseHeaders()
-                .set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, 0);
-
-        OutputStream outputStream = exchange.getResponseBody();
-        outputStream.write(jsonResponse.getBytes());
-        outputStream.close();
+        sendText(exchange, jsonResponse);
     }
 
     private void getTask(HttpExchange exchange) throws IOException {
-        try{
+        try {
             String[] split = exchange.getRequestURI().getPath().split("/");
             int id = Integer.parseInt(split[2]);
             Task task = manager.getTaskById(id);
 
-            String jsonResponse = Managers.getGson().toJson(task);
-            exchange.getResponseHeaders()
-                    .set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, 0);
 
-            OutputStream outputStream = exchange.getResponseBody();
-            outputStream.write(jsonResponse.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            exchange.sendResponseHeaders(404,0);
+            String jsonResponse = Managers.getGson().toJson(task);
+
+            sendText(exchange, jsonResponse);
+        } catch (NotFoundException e) {
+            handleNoSuchElementException(exchange);
+        } catch (IOException e) {
+            handleIOException(exchange);
         }
     }
 
     private void createTask(HttpExchange exchange) throws IOException {
-        InputStream requestBody = exchange.getRequestBody();
-        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+
+        String body = readText(exchange);
+
         Task task = Managers.getGson()
                 .fromJson(body, Task.class);
 
@@ -104,24 +111,23 @@ public class TaskHandler extends Handler implements HttpHandler {
             manager.createNewTask(task);
             exchange.sendResponseHeaders(201, 0);
         } catch (Exception e) {
-            exchange.sendResponseHeaders(406,0);
+            sendHasInteractions(exchange);
         }
-
     }
 
     private void updateTask(HttpExchange exchange) throws IOException {
-        InputStream requestBody = exchange.getRequestBody();
-        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+
+        String body = readText(exchange);
         Task task = Managers.getGson().fromJson(body, Task.class);
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);
         task.setId(id);
 
-        try{
+        try {
             manager.updateTask(task);
-            exchange.sendResponseHeaders(200,0);
+            exchange.sendResponseHeaders(200, 0);
         } catch (Exception e) {
-            exchange.sendResponseHeaders(406,0);
+            sendHasInteractions(exchange);
         }
     }
 
@@ -129,6 +135,6 @@ public class TaskHandler extends Handler implements HttpHandler {
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);
         manager.deleteByIdTask(id);
-        exchange.sendResponseHeaders(204,0);
+        exchange.sendResponseHeaders(204, 0);
     }
 }

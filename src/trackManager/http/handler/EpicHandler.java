@@ -3,13 +3,13 @@ package trackManager.http.handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import trackManager.controllers.TaskManager;
+import trackManager.exception.NotFoundException;
+import trackManager.exception.UrlException;
 import trackManager.model.Epic;
 import trackManager.model.SubTask;
 import trackManager.utils.Managers;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -22,6 +22,13 @@ public class EpicHandler extends Handler implements HttpHandler {
         try {
             String requestMethod = exchange.getRequestMethod();
             String path = exchange.getRequestURI().getPath();
+
+            if (!isValidPath(path)) {
+                System.out.println("Неправильный запрос: " + path);
+                exchange.sendResponseHeaders(404, 0); // Отправляем код ошибки 404
+                return;
+            }
+
             switch (requestMethod) {
                 case "GET": {
                     if (Pattern.matches("^/epics/\\d+$", path)) {
@@ -57,24 +64,22 @@ public class EpicHandler extends Handler implements HttpHandler {
                     exchange.sendResponseHeaders(405, 0);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new UrlException(e.getMessage());
         } finally {
             exchange.close();
         }
+    }
+
+    private boolean isValidPath(String path) {
+        return Pattern.matches("^/epics(/\\d+)?(/subTasks)?$", path);
     }
 
     private void getEpics(HttpExchange exchange) throws IOException {
         List<Epic> epics = manager.getAllEpics();
         String jsonResponse = Managers.getGson().toJson(epics);
 
-        exchange.getResponseHeaders()
-                .set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, 0);
-
-        OutputStream outputStream = exchange.getResponseBody();
-        outputStream.write(jsonResponse.getBytes());
-        outputStream.close();
+        sendText(exchange, jsonResponse);
     }
 
     private void getEpic(HttpExchange exchange) throws IOException {
@@ -84,17 +89,14 @@ public class EpicHandler extends Handler implements HttpHandler {
             Epic epic = manager.getEpicById(id);
 
             String jsonResponse = Managers.getGson().toJson(epic);
-            exchange.getResponseHeaders()
-                    .set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, 0);
 
-            OutputStream outputStream = exchange.getResponseBody();
-            outputStream.write(jsonResponse.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            exchange.sendResponseHeaders(404,0);
+            sendText(exchange, jsonResponse);
+
+        } catch (NotFoundException e) {
+            handleNoSuchElementException(exchange);
+        } catch (IOException e) {
+            handleIOException(exchange);
         }
-
     }
 
     private void getSubTaskOfEpic(HttpExchange exchange) throws IOException {
@@ -105,21 +107,17 @@ public class EpicHandler extends Handler implements HttpHandler {
             List<SubTask> epicAllSubtask = manager.getEpicAllSubtask(epic);
 
             String jsonResponse = Managers.getGson().toJson(epicAllSubtask);
-            exchange.getResponseHeaders()
-                    .set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, 0);
+            sendText(exchange, jsonResponse);
 
-            OutputStream outputStream = exchange.getResponseBody();
-            outputStream.write(jsonResponse.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            exchange.sendResponseHeaders(404,0);
+        } catch (NotFoundException e) {
+            handleNoSuchElementException(exchange);
+        } catch (IOException e) {
+            handleIOException(exchange);
         }
     }
 
     private void createEpic(HttpExchange exchange) throws IOException {
-        InputStream requestBody = exchange.getRequestBody();
-        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+        String body = readText(exchange);
         Epic epic = Managers.getGson()
                 .fromJson(body, Epic.class);
 
@@ -132,8 +130,7 @@ public class EpicHandler extends Handler implements HttpHandler {
     }
 
     private void updateEpic(HttpExchange exchange) throws IOException {
-        InputStream requestBody = exchange.getRequestBody();
-        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+        String body = readText(exchange);
         Epic epic = Managers.getGson().fromJson(body,Epic.class);
         String[] split = exchange.getRequestURI().getPath().split("/");
         int id = Integer.parseInt(split[2]);

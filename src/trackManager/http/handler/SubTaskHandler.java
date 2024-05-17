@@ -3,14 +3,13 @@ package trackManager.http.handler;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import trackManager.controllers.TaskManager;
+import trackManager.exception.NotFoundException;
+import trackManager.exception.UrlException;
 import trackManager.model.Epic;
 import trackManager.model.SubTask;
 import trackManager.utils.Managers;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -23,6 +22,13 @@ public class SubTaskHandler extends Handler implements HttpHandler {
         try {
             String path = exchange.getRequestURI().getPath();
             String requestMethod = exchange.getRequestMethod();
+
+            if (!isValidPath(path)) {
+                System.out.println("Неправильный запрос: " + path);
+                exchange.sendResponseHeaders(404, 0); // Отправляем код ошибки 404
+                return;
+            }
+
             switch (requestMethod) {
                 case "GET": {
                     if (Pattern.matches("^/subTasks$", path)) {
@@ -55,25 +61,21 @@ public class SubTaskHandler extends Handler implements HttpHandler {
                     exchange.sendResponseHeaders(405, 0);
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            throw new UrlException(e.getMessage());
         } finally {
             exchange.close();
         }
+    }
+    private boolean isValidPath(String path) {
+        return Pattern.matches("^/subTasks(/\\d+)?$", path);
     }
 
     private void getSubTasks(HttpExchange exchange) throws IOException {
         List<SubTask> allSubTasks = manager.getAllSubTasks();
         String jsonResponse = Managers.getGson().toJson(allSubTasks);
 
-        exchange.getResponseHeaders()
-                .set("Content-Type", "application/json");
-        exchange.sendResponseHeaders(200, 0);
-
-        OutputStream outputStream = exchange.getResponseBody();
-        outputStream.write(jsonResponse.getBytes());
-        outputStream.close();
+        sendText(exchange, jsonResponse);
     }
 
     private void getSubtask(HttpExchange exchange) throws IOException {
@@ -81,23 +83,20 @@ public class SubTaskHandler extends Handler implements HttpHandler {
             String[] split = exchange.getRequestURI().getPath().split("/");
             int id = Integer.parseInt(split[2]);
             SubTask subTask = manager.getSubTaskById(id);
+
             String jsonResponse = Managers.getGson().toJson(subTask);
 
-            exchange.getResponseHeaders()
-                    .set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(200, 0);
+            sendText(exchange, jsonResponse);
 
-            OutputStream outputStream = exchange.getResponseBody();
-            outputStream.write(jsonResponse.getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            exchange.sendResponseHeaders(404,0);
+        } catch (NotFoundException e) {
+            handleNoSuchElementException(exchange);
+        } catch (IOException e) {
+            handleIOException(exchange);
         }
     }
 
     private void createSubTask(HttpExchange exchange) throws IOException {
-        InputStream requestBody = exchange.getRequestBody();
-        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+        String body = readText(exchange);
         SubTask subTask = Managers.getGson()
                 .fromJson(body, SubTask.class);
 
@@ -107,13 +106,12 @@ public class SubTaskHandler extends Handler implements HttpHandler {
             manager.createNewSubTask(subTask, epic);
             exchange.sendResponseHeaders(201, 0);
         } catch (Exception e) {
-            exchange.sendResponseHeaders(406, 0);
+            sendHasInteractions(exchange);
         }
     }
 
     private void updateSubTask(HttpExchange exchange) throws IOException {
-        InputStream requestBody = exchange.getRequestBody();
-        String body = new String(requestBody.readAllBytes(), StandardCharsets.UTF_8);
+        String body = readText(exchange);
         SubTask subTask = Managers.getGson()
                 .fromJson(body, SubTask.class);
         String[] split = exchange.getRequestURI().getPath().split("/");
@@ -124,7 +122,7 @@ public class SubTaskHandler extends Handler implements HttpHandler {
             manager.updateSubTask(subTask);
             exchange.sendResponseHeaders(200,0);
         } catch (Exception e) {
-            exchange.sendResponseHeaders(406,0);
+            sendHasInteractions(exchange);
         }
     }
 
