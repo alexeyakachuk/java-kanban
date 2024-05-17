@@ -24,26 +24,19 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
         file = File.createTempFile("test", ".csv");
         FileBackedTaskManager fileBackedTaskManager = FileBackedTaskManager.loadFormFile(file);
 
-        // When
         Task task1 = new Task("Task 1", "описание");
         fileBackedTaskManager.createNewTask(task1);
-
 
         Epic epic1 = new Epic("Epic 1", "описание");
         fileBackedTaskManager.createNewEpic(epic1);
 
-
         SubTask subTask1 = new SubTask("SubTask 1", "описание");
         fileBackedTaskManager.createNewSubTask(subTask1, epic1);
-
 
         fileBackedTaskManager.getTaskById(1);
         fileBackedTaskManager.getEpicById(2);
         fileBackedTaskManager.getSubTaskById(3);
     }
-
-
-
 
     @Test
     void loadAndSaveFromFileTest() {
@@ -90,12 +83,7 @@ class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskManager>{
         assertEquals(statusSubTask, Status.DONE);
         statusEpic = epicById.getStatusTask();
         assertEquals(statusEpic, Status.DONE);
-        System.out.println(epicById.getStartTime());
-        System.out.println(epicById.getEndTime());
-
-
     }
-
 
     @Test
     void deleteTasksTest() {

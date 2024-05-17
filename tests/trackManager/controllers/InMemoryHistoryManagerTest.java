@@ -15,8 +15,6 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskManager> {
     HistoryManager historyManager = Managers.getDefaultHistory();
     TaskManager manager = Managers.getDefault();
 
-
-
     @Test
     void addTest() {
         Task task = new Task("Task", "Описание задачи");
@@ -33,7 +31,6 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         System.out.println(historyManager.getTasks());
     }
 
-
     @Test
     void removeTaskTest(){
 
@@ -46,9 +43,6 @@ class InMemoryHistoryManagerTest extends TaskManagerTest<InMemoryTaskManager> {
         manager.createNewEpic(epic);
         manager.createNewSubTask(subTask, epic);
         manager.createNewSubTask(subTask1, epic);
-
-
-
 
         historyManager.add(task);
         historyManager.add(epic);

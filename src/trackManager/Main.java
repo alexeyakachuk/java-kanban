@@ -39,6 +39,11 @@ public class Main {
         manager.getSubTaskById(newIdSubTask);
         manager.getSubTaskById(newIdSubTask1);
         System.out.println(manager.getHistory());
+        System.out.println(manager.getAllEpics());
+
+        System.out.println(Managers.getGson().toJson(epic));
+        System.out.println(Managers.getGson().toJson(subTask));
+        System.out.println(Managers.getGson().toJson(subTask1));
 
 
 
@@ -50,6 +55,7 @@ public class Main {
         SubTask subTaskNew1 = new SubTask("subTask", "описание Subtask1");
         int idTask = manager.createNewTask(taskNew);
         int idEpic = manager.createNewEpic(epicNew);
+        System.out.println(manager.getAllEpics());
         int idSubTask = manager.createNewSubTask(subTaskNew, epicNew);
         int idSubTask1 = manager.createNewSubTask(subTaskNew1, epicNew);
 
@@ -58,15 +64,20 @@ public class Main {
         manager.updateSubTask(subTaskNew);
 
 
+
+
         subTaskNew1.setStartTime(LocalDateTime.of(2024,2,1,10,10,0));
         subTaskNew1.setDuration(Duration.ofMinutes(10));
         manager.updateSubTask(subTaskNew1);
-
+        System.out.println(manager.getAllSubTasks());
+        System.out.println(manager.getAllEpics());
         System.out.println(manager.getPrioritizedTasks());
 
         manager.deleteByIdSubTask(idSubTask);
 
         System.out.println(manager.getPrioritizedTasks());
+
+
     }
 }
 

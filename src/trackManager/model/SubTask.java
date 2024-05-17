@@ -9,9 +9,10 @@ import static trackManager.controllers.FileBackedTaskManager.parseTime;
 
 
 public class SubTask extends Task {
-
-
     private Integer epicId;
+    public SubTask() {
+        this.taskType = TaskType.SUBTASK;
+    }
 
     public SubTask(String nameTask, String descriptionTask, LocalDateTime startTime, Duration duration) {
         super(nameTask, descriptionTask, startTime, duration);
@@ -26,7 +27,6 @@ public class SubTask extends Task {
     @Override
     public Integer getEpicId() {
         return epicId;
-
     }
 
     public void setEpicId(Integer epicId) {

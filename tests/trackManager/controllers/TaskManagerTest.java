@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract public class TaskManagerTest<T extends TaskManager> {
-
     protected TaskManager manager;
 
     @BeforeEach
@@ -40,7 +39,6 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void createNewEpicTest() {
-
         Epic epic = new Epic("epic", "описание",
                 null, null);
 
@@ -49,13 +47,10 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
         assertNotNull(savedEpic, "Задача не найдена.");
         assertEquals(epic, savedEpic, "Задачи не совпадают.");
-
-
     }
 
     @Test
     void createNewSubTaskTest() {
-
         Epic epic = new Epic("Epic", "описание");
         SubTask subTask = new SubTask("SubTask", "Описание сабтаски",
                 LocalDateTime.of(2024,1,1,10,10,0), Duration.ofMinutes(10));
@@ -65,7 +60,6 @@ abstract public class TaskManagerTest<T extends TaskManager> {
 
         assertNotNull(savedSubTask, "Задача не найдена.");
         assertEquals(subTask, savedSubTask, "Задачи не совпадают.");
-
     }
 
     @Test
@@ -118,8 +112,6 @@ abstract public class TaskManagerTest<T extends TaskManager> {
         LocalDateTime startTimeSybTask = subTask.getStartTime();
 
         assertEquals(startTimeTask, LocalDateTime.of(2024,1,1,10,10,0));
-
-
     }
 
     @Test
@@ -149,13 +141,11 @@ abstract public class TaskManagerTest<T extends TaskManager> {
         ManagerValidateException thrown = assertThrows(
                 ManagerValidateException.class,
                 () -> manager.createNewSubTask(subTask3, epic),
-                "Задачи не пересекаются"
-        );
+                "Задачи не пересекаются");
 
         assertTrue(thrown.getMessage().contains("Задача пересекается с другой задачей!"));
         assertFalse(manager.isTimeOverlapping(subTask2, subTask1));
     }
-
 }
 
 

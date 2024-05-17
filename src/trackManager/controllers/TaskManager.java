@@ -5,6 +5,7 @@ import trackManager.model.SubTask;
 import trackManager.model.Task;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface TaskManager {
@@ -69,6 +70,14 @@ public interface TaskManager {
 
     HistoryManager getHistoryManager();
 
+    List<Task> getPrioritizedTasks();
+
 
     boolean isTimeOverlapping(Task first, Task second);
+
+    Map<Integer, Task> getTaskMap();
+
+    Map<Integer, Epic> getEpicMap();
+
+    Map<Integer, SubTask> getSubTaskMap();
 }
